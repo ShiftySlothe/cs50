@@ -13,7 +13,7 @@ int main(void)
 
     for (int i = 1; i <= sizeOfTower; i++)
     {
-        for (int j = sizeOfTower - i; j >= 0; j--)
+        for (int j = sizeOfTower - i - 1; j >= 0; j--)
         {
             printf(" ");
         }
