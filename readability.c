@@ -31,7 +31,7 @@ int main(void)
 float CalculateReadability()
 {
     float letterCount = 0;
-    float wordCount = 0;
+    float wordCount = 1;
     float sentenceCount = 0;
 
     for (int i = 0, length = strlen(userInput); i < length; i++)
@@ -61,5 +61,5 @@ float CalculateReadability()
     float lettersPer100 = letterCount / wordsPer100;
     float sentencesPer100 = sentenceCount / wordsPer100;
     
-    return 0.0588 * lettersPer100 - 0.296 * sentencesPer100 - 15.8;
+    return (0.0588 * lettersPer100) - (0.296 * sentencesPer100) - 15.8;
 }
