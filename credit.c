@@ -27,12 +27,12 @@ int AddAlternateDigits(int startingDigit, bool doubleAnswers);
 void DisplayCardType();
 void UserFailedTest();
 
-int main (void)
+int main(void)
 {
    creditCardNumber = get_long("Enter your credit card number, no hyphens: ");
-
+   
    isCreditCard = CheckLength();
-
+   
    if(isCreditCard)
    {
       isCreditCard = CheckStartingCharacters();
