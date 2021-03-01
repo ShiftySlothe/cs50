@@ -56,6 +56,8 @@ float CalculateReadability()
 
     }
 
+    wordCount += sentenceCount; 
+    
     float wordsPer100 = wordCount / 100;
     float lettersPer100 = letterCount / wordsPer100;
     float sentencesPer100 = sentenceCount / wordsPer100;
