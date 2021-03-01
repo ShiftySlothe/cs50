@@ -20,7 +20,7 @@ int main(void)
     }
     else if (roundedScore >= 1 && roundedScore < 16)
     {
-        printf("Grade %ihe\n", roundedScore);
+        printf("Grade %i\n", roundedScore);
     }
     else
     {
@@ -30,9 +30,9 @@ int main(void)
 
 float CalculateReadability()
 {
-    int letterCount = 0;
-    int wordCount = 0;
-    int sentenceCount = 0;
+    float letterCount = 0;
+    float wordCount = 0;
+    float sentenceCount = 0;
 
     for (int i = 0, length = strlen(userInput); i < length; i++)
     {
@@ -59,6 +59,6 @@ float CalculateReadability()
     float wordsPer100 = wordCount / 100;
     float lettersPer100 = letterCount / wordsPer100;
     float sentencesPer100 = sentenceCount / wordsPer100;
-
+    
     return 0.0588 * lettersPer100 - 0.296 * sentencesPer100 - 15.8;
 }
