@@ -49,14 +49,13 @@ float CalculateReadability()
             wordCount++;
         }
 
-        if(currentCharIndex == 33 || currentCharIndex == 46 || currentCharIndex == 62)
+        if(currentCharIndex == 33 || currentCharIndex == 46 || currentCharIndex == 63)
         {
             sentenceCount++;
         }
 
     }
 
-    wordCount += sentenceCount; 
     
     float wordsPer100 = wordCount / 100;
     float lettersPer100 = letterCount / wordsPer100;
