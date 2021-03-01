@@ -3,11 +3,11 @@
 #include <stdlib.h>
 
 //Used to test the length and starting digits by division
-const long ThirteenDigitTest =     1000000000000;
-const long FourteenDigitTest =     10000000000000;
-const long FithteenDigitTest =    100000000000000;
-const long SixteenDigitTest =    1000000000000000;
-const long SeventeenDigitTest = 10000000000000000;
+const long ThirteenDigitTest =      100000000000;
+const long FourteenDigitTest =     1000000000000;
+const long FithteenDigitTest =    10000000000000;
+const long SixteenDigitTest =    100000000000000;
+const long SeventeenDigitTest = 1000000000000000;
 long firstDigitTest = 0;
 
 long creditCardNumber = 0;
@@ -51,17 +51,17 @@ bool CheckLength()
 {
    //Check length of number by division
 
-   if (creditCardNumber / SixteenDigitTest >= 1 && creditCardNumber / SeventeenDigitTest < 10)
+   if (creditCardNumber / SixteenDigitTest >= 10 && creditCardNumber / SeventeenDigitTest < 100)
    {
       cardNumberLength = 16;
       return true;
    }
-   else if (creditCardNumber / FithteenDigitTest >= 1)
+   else if (creditCardNumber / FithteenDigitTest >= 10)
    {
       cardNumberLength = 15;
       return true;
    }
-   else if (creditCardNumber / ThirteenDigitTest >= 1 && creditCardNumber / ThirteenDigitTest < 10)
+   else if (creditCardNumber / ThirteenDigitTest >= 10 && creditCardNumber / ThirteenDigitTest < 100)
    {
       cardNumberLength = 13;
       return true;
@@ -77,7 +77,7 @@ bool CheckLength()
 
 bool CheckStartingCharacters()
 {
-   //Places a decimal point after the first character in card number to query first characters
+   //Places a decimal point after the second character in card number to query first characters
    switch(cardNumberLength)
    {
       case 13:
@@ -120,11 +120,11 @@ bool CheckStartingCharacters()
 
 bool CheckFirstTwoAmex()
 {
-   if(firstDigitTest >= 3.4 && firstDigitTest < 3.5)
+   if(firstDigitTest >= 34 && firstDigitTest < 35)
    {
       return true;
    }
-   else if (firstDigitTest >= 3.7 && firstDigitTest < 3.8)
+   else if (firstDigitTest >= 37 && firstDigitTest < 38)
    {
       return true;
    }
@@ -136,7 +136,7 @@ bool CheckFirstTwoAmex()
 
 bool CheckFirstTwoVisa()
 {
-   if (firstDigitTest >= 4 && firstDigitTest < 5)
+   if (firstDigitTest >= 40 && firstDigitTest < 50)
    {
       return true;
    }
@@ -148,7 +148,7 @@ bool CheckFirstTwoVisa()
 
 bool CheckFirstTwoMasterCard()
 {
-   if(firstDigitTest >= 5.1 && firstDigitTest < 5.6)
+   if(firstDigitTest >= 51 && firstDigitTest < 56)
    {
       return true;
    }
@@ -223,11 +223,11 @@ int AddAlternateDigits(int startingDigit, bool doubleAnswers)
 
 void DisplayCardType()
 {
-   if(firstDigitTest < 4)
+   if(firstDigitTest < 40)
    {
       printf("AMEX\n");
    }
-   else if(firstDigitTest >= 5)
+   else if(firstDigitTest >= 50)
    {
       printf("MASTERCARD\n");
    }
