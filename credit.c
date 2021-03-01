@@ -154,8 +154,10 @@ int AddAlternateDigits(int startingDigit, bool doubleAnswers)
             runningTotal += answerDoubled;
          }
       }
-      //Doubles the answer if required
-      runningTotal += (doubleAnswers) ? x * 2 : x;
+      else
+      {
+         runningTotal += x;
+      }
    }
 
    return runningTotal;
