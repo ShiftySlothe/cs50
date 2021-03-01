@@ -135,10 +135,25 @@ int AddAlternateDigits(int startingDigit, bool doubleAnswers)
 {
    int runningTotal = 0;
 
-   for(int i = startingDigit; i <= cardNumberLength; i = i + 2)
+   for(int i = startingDigit; i < cardNumberLength; i = i + 2)
    {
       //Converts relevant char of card number to an int
       int x = cardAsString[i] - '0';
+      
+      if (doubleAnswers)
+      {
+         int answerDoubled = x * 2;
+         
+         //If the doubled answer has more than two digits, adds those individual digits. 
+         if (x * 2 > 9)
+         {
+            runningTotal += answerDoubled - 9;
+         }
+         else
+         {
+            runningTotal += answerDoubled;
+         }
+      }
       //Doubles the answer if required
       runningTotal += (doubleAnswers) ? x * 2 : x;
    }
