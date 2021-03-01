@@ -110,13 +110,13 @@ bool CheckLuhnsTest()
    //Applies Luhns Algorithm (add and multiply digits) dependant on card number lenght
    if(cardNumberLength == 16)
    {
-      sumOfDigits += AddAlternateDigits(1, true);
-      sumOfDigits += AddAlternateDigits(2, false);
+      sumOfDigits += AddAlternateDigits(0, true);
+      sumOfDigits += AddAlternateDigits(1, false);
    }
    else
    {
-      sumOfDigits += AddAlternateDigits(2, true);
-      sumOfDigits += AddAlternateDigits(1, false);
+      sumOfDigits += AddAlternateDigits(1, true);
+      sumOfDigits += AddAlternateDigits(0, false);
    }
 
    if(sumOfDigits % 10 == 0)
@@ -139,7 +139,6 @@ int AddAlternateDigits(int startingDigit, bool doubleAnswers)
    {
       //Converts relevant char of card number to an int
       int x = cardAsString[i] - '0';
-
       //Doubles the answer if required
       runningTotal += (doubleAnswers) ? x * 2 : x;
    }
