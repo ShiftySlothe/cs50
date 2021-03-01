@@ -19,6 +19,9 @@ bool isCreditCard = false;
 //Method References
 bool CheckLength();
 bool CheckStartingCharacters();
+bool CheckFirstTwoAmex();
+bool CheckFirstTwoVisa();
+bool CheckFirstTwoMasterCard();
 bool CheckLuhnsTest();
 int AddAlternateDigits(int startingDigit, bool doubleAnswers);
 void DisplayCardType();
@@ -74,31 +77,86 @@ bool CheckLength()
 
 bool CheckStartingCharacters()
 {
+   //Places a decimal point after the first character in card number to query first characters
    switch(cardNumberLength)
    {
       case 13:
          firstDigitTest = creditCardNumber / ThirteenDigitTest;
+         if(CheckFirstTwoAmex())
+         {
+            return true;
+         }
+         else if (CheckFirstTwoVisa())
+         {
+            return true;
+         }
          break;
       case 15:
          firstDigitTest = creditCardNumber / FithteenDigitTest;
+         if(CheckFirstTwoAmex())
+         {
+            return true;
+         }
          break;
       case 16:
          firstDigitTest = creditCardNumber / SixteenDigitTest;
+         if(CheckFirstTwoVisa())
+         {
+            return true;
+         }
+         else if (CheckFirstTwoMasterCard())
+         {
+            return true;
+         }
       default:
          break;
    }
 
-   if(firstDigitTest >= 3 && firstDigitTest <= 5)
+   //If switch doesn't return true, user has failed
+   UserFailedTest();
+   return false;
+   
+}
+
+bool CheckFirstTwoAmex()
+{
+   if(firstDigitTest >= 3.4 && firstDigitTest < 3.5)
+   {
+      return true;
+   }
+   else if (firstDigitTest >= 3.7 && firstDigitTest < 3.8)
    {
       return true;
    }
    else
    {
-      UserFailedTest();
       return false;
    }
 }
 
+bool CheckFirstTwoVisa()
+{
+   if (firstDigitTest >= 4 && firstDigitTest < 5)
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+}
+
+bool CheckFirstTwoMasterCard()
+{
+   if(firstDigitTest >= 5.1 && firstDigitTest < 5.6)
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+}
 
 bool CheckLuhnsTest()
 {
