@@ -106,7 +106,6 @@ bool CheckLuhnsTest()
 
    //Converts long to char *
    sprintf(cardAsString, "%ld", creditCardNumber);
-   printf("%s\n", cardAsString);
 
    //Applies Luhns Algorithm (add and multiply digits) dependant on card number lenght
    if(cardNumberLength == 16)
