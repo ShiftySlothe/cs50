@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+int charCheck[26];
 int ofset[26];
 int cypherLength;
 string userInputCypher;
@@ -49,7 +50,7 @@ int main(int argc, string argv[])
     string userOutputCypher = malloc(stringLength);
     userOutputCypher = EncodePlainText();
 
-    printf("ciphertest: %s", userOutputCypher);
+    printf("ciphertext: %s", userOutputCypher);
     printf("\n");
     return 0;
 }
