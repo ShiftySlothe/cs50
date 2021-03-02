@@ -31,7 +31,7 @@ int main(int argc, string argv[])
     }
 
     userInputCypher = argv[1];
-    stringLength = strlen(userInputCypher);
+    cypherLength = strlen(userInputCypher);
     ToUpperCase();
 
     // MoveToArray
@@ -50,11 +50,13 @@ int main(int argc, string argv[])
     userOutputCypher = EncodePlainText();
 
     printf("ciphertest: %s", userOutputCypher);
+    printf("\n");
+    return 0;
 }
 
 void ToUpperCase()
 {
-    for(int i = 0; i < stringLength; i++)
+    for(int i = 0; i < cypherLength; i++)
     {
         userInputCypher[i] = toupper(userInputCypher[i]);
     }
@@ -64,7 +66,7 @@ bool CheckUserInput()
     cypherLength = strlen(userInputCypher);
 
     //Check length
-    if (stringLength != 26)
+    if (cypherLength != 26)
         return false;
 
     //Check each character
