@@ -49,7 +49,7 @@ int main(int argc, string argv[])
     string userOutputCypher = malloc(stringLength);
     userOutputCypher = EncodePlainText();
 
-    printf("%s", userOutputCypher);
+    printf("ciphertest: %s", userOutputCypher);
 }
 
 void ToUpperCase()
