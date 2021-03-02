@@ -96,7 +96,7 @@ string EncodePlainText()
         if (userInputPlainText[i] >= 65 && userInputPlainText[i] <= 90)
         {
           int cypherASCIIValue = userInputPlainText[i] - 0;
-          output[i] = cypherASCIIValue - ofset[i];
+          output[i] = cypherASCIIValue + ofset[i];
         }
           if (userInputPlainText[i] >= 97 && userInputPlainText[i] <= 122)
         {
