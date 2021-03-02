@@ -16,15 +16,19 @@ void MoveToArray();
 void CalculateASCIIOfset();
 void EncodePlainText();
 
-int main(int args, char *cypherInput[])
+int main(int argc, string argv[])
 {
-    if (args == 1)
+    if (argc == 1)
     {
-        printf("Invalid or empty argument provided \n");
+        printf("No argument provided \n");
         return 1;
     }
+    else if (argc > 2)
+    {
+        printf("Too many arguments provided. \n");
+    }
 
-    userInputCypher = cypherInput[0];
+    userInputCypher = argv[1];
     stringLength = strlen(userInputCypher);
     ToUpperCase();
 
