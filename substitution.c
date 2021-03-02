@@ -2,19 +2,20 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 int ofset[26];
 int cypherLength;
 string userInputCypher;
 int stringLength;
 string userInputPlainText;
-char userOutputCypher[26];
+
 
 bool CheckUserInput();
 void ToUpperCase();
 void MoveToArray();
 void CalculateASCIIOfset();
-void EncodePlainText();
+string EncodePlainText();
 
 int main(int argc, string argv[])
 {
@@ -26,6 +27,7 @@ int main(int argc, string argv[])
     else if (argc > 2)
     {
         printf("Too many arguments provided. \n");
+        return 1;
     }
 
     userInputCypher = argv[1];
@@ -35,15 +37,17 @@ int main(int argc, string argv[])
     // MoveToArray
     if (!CheckUserInput())
     {
-        printf("Error, incorrect format.");
+        printf("Error, incorrect format.\n");
         return 1;
     }
 
     CalculateASCIIOfset();
-
+    
     userInputPlainText = get_string("plaintext:");
-
-    EncodePlainText();
+    stringLength = strlen(userInputPlainText);
+    
+    string userOutputCypher = malloc(stringLength);
+    userOutputCypher = EncodePlainText();
 
     printf("%s", userOutputCypher);
 }
@@ -83,19 +87,23 @@ void CalculateASCIIOfset()
     }
 }
 
-void EncodePlainText()
+string EncodePlainText()
 {
-    for (int i = 0; i < 26; i++)
+    string output = malloc(stringLength);
+    
+    for (int i = 0; i < stringLength; i++)
     {
-        if (userInputCypher[i] >= 65 && userInputCypher[i] <= 90)
+        if (userInputPlainText[i] >= 65 && userInputPlainText[i] <= 90)
         {
-          int cypherASCIIValue = userInputCypher[i] - 0;
-          userOutputCypher[i] = cypherASCIIValue - ofset[i];
+          int cypherASCIIValue = userInputPlainText[i] - 0;
+          output[i] = cypherASCIIValue - ofset[i];
         }
-          if (userInputCypher[i] >= 97 && userInputCypher[i] <= 122)
+          if (userInputPlainText[i] >= 97 && userInputPlainText[i] <= 122)
         {
-          int cypherASCIIValue = userInputCypher[i] - 0;
-          userOutputCypher[i] = cypherASCIIValue - ofset[i];
+          int cypherASCIIValue = userInputPlainText[i] - 0;
+          output[i] = cypherASCIIValue + ofset[i];
         }
     }
+    
+    return output;
 }
