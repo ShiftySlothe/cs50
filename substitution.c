@@ -74,7 +74,18 @@ bool CheckUserInput()
     for (int i = 0; i < 26; i++)
     {
         if (userInputCypher[i] < 65 || userInputCypher[i] > 90)
+        {
             return false;
+        }
+
+        else
+        {
+            if(charCheck[userInputCypher[i] - 0] == 1)
+            {
+                 return false;
+            }
+            charCheck[userInputCypher[i] - 0] = 1;
+        }
     }
 
     return true;
