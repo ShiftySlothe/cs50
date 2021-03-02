@@ -88,12 +88,12 @@ void print_winner(void)
 {
     int i = 1;
     int highscore = candidates[candidate_count - i].votes;
-    do
+    printf("%s\n", candidates[candidate_count - i].name);
+    while (candidates[candidate_count - (i + 1)].votes >= highscore)
     {
-       printf("%s\n", candidates[candidate_count - i].name);
        i++;
+       printf("%s\n", candidates[candidate_count - i].name);
     }
-    while (candidates[candidate_count - i].votes == candidates[candidate_count - (i + 1)].votes);
 
 }
 //Left is for left index, right for right of subarray to be sorted
