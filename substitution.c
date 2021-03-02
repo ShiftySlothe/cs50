@@ -4,22 +4,26 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+//Empty array, 1's are added once a character is included in Cypher
 int charCheck[26];
+//ASCII ofset of cypher to correct character in alphabet
 int ofset[26];
-int cypherLength;
+
 string userInputCypher;
-int stringLength;
+int cypherLength;
+
 string userInputPlainText;
+int stringLength;
 
-
+//Ensures length, letters and lack of repitition in input.
 bool CheckUserInput();
 void ToUpperCase();
-void MoveToArray();
 void CalculateASCIIOfset();
 string EncodePlainText();
 
 int main(int argc, string argv[])
 {
+    //Checks command line arguments
     if (argc == 1)
     {
         printf("No argument provided \n");
@@ -30,12 +34,12 @@ int main(int argc, string argv[])
         printf("Too many arguments provided. \n");
         return 1;
     }
-
+    
     userInputCypher = argv[1];
     cypherLength = strlen(userInputCypher);
     ToUpperCase();
 
-    // MoveToArray
+    //Checks user input for errors
     if (!CheckUserInput())
     {
         printf("Error, incorrect format.\n");
@@ -47,6 +51,7 @@ int main(int argc, string argv[])
     userInputPlainText = get_string("plaintext:");
     stringLength = strlen(userInputPlainText);
     
+    //Assigns a string based on user input length
     string userOutputCypher = malloc(stringLength);
     userOutputCypher = EncodePlainText();
 
@@ -57,18 +62,21 @@ int main(int argc, string argv[])
 
 void ToUpperCase()
 {
-    for(int i = 0; i < cypherLength; i++)
+    for (int i = 0; i < cypherLength; i++)
     {
         userInputCypher[i] = toupper(userInputCypher[i]);
     }
 }
+
 bool CheckUserInput()
 {
     cypherLength = strlen(userInputCypher);
 
     //Check length
     if (cypherLength != 26)
-        return false;
+    {
+        return false; 
+    }
 
     //Check each character
     for (int i = 0; i < 26; i++)
@@ -77,12 +85,12 @@ bool CheckUserInput()
         {
             return false;
         }
-
+        //Check for repeated characters
         else
         {
-            if(charCheck[userInputCypher[i] - 0] == 1)
+            if (charCheck[userInputCypher[i] - 0] == 1)
             {
-                 return false;
+                return false;
             }
             charCheck[userInputCypher[i] - 0] = 1;
         }
@@ -95,8 +103,11 @@ void CalculateASCIIOfset()
 {
     for (int i = 0; i < 26; i++)
     {
+        //Get ASCII value
         int cypherASCIIValue = userInputCypher[i] - 0;
+        //Iterate through alphabet
         int alphabeticalASCIIValue = i + 65;
+        //Caculate ofset
         ofset[i] = cypherASCIIValue - alphabeticalASCIIValue;
     }
 }
@@ -105,18 +116,23 @@ string EncodePlainText()
 {
     string output = malloc(stringLength);
     
+    //Iterate through each letter in input
     for (int i = 0; i < stringLength; i++)
     {
+        //Upper case
         if (userInputPlainText[i] >= 65 && userInputPlainText[i] <= 90)
         {
-          int cypherASCIIValue = userInputPlainText[i] - 0;
-          output[i] = cypherASCIIValue + ofset[cypherASCIIValue - 65];
+            int cypherASCIIValue = userInputPlainText[i] - 0;
+            output[i] = cypherASCIIValue + ofset[cypherASCIIValue - 65];
         }
+        
+        //Lower case
         else if (userInputPlainText[i] >= 97 && userInputPlainText[i] <= 122)
         {
-          int cypherASCIIValue = userInputPlainText[i] - 0;
-          output[i] = cypherASCIIValue + ofset[cypherASCIIValue - 97];
+            int cypherASCIIValue = userInputPlainText[i] - 0;
+            output[i] = cypherASCIIValue + ofset[cypherASCIIValue - 97];
         }
+        //Punctuation
         else
         {
             output[i] = userInputPlainText[i];
