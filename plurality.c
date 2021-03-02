@@ -60,10 +60,10 @@ int main(int argc, string argv[])
             printf("Invalid vote.\n");
         }
     }
-    
+
     //Merge sort array
     mergeSort(candidates, 0, candidate_count -1);
-    
+
     // Display winner of election
     print_winner();
 }
@@ -79,7 +79,7 @@ bool vote(string name)
             return true;
         }
     }
-    
+
     return false;
 }
 
@@ -102,10 +102,10 @@ void mergeSort(candidate startingArray[], int left, int right)
     if(left < right)
     {
         int middle = left + (right - 1) / 2;
-        
+
         mergeSort(startingArray, left, middle);
         mergeSort(startingArray, middle + 1, right);
-        
+
         merge(startingArray, left, middle, right);
     }
 }
@@ -114,30 +114,30 @@ void merge(candidate startingArray[], int left, int middle, int right)
 {
     //Temp variables for loops
     int i, j, k;
-    
+
     //Get length of each sub array
     int leftLength = middle - left + 1;
     int rightLength = right - middle;
-    
+
     //Create temporarry arrays
     candidate leftHalf[leftLength], rightHalf[rightLength];
-    
+
     //Copy data from arrays to temp
     for (i = 0; i < leftLength; i++)
     {
         leftHalf[i] = startingArray[left + i];
     }
-    
+
     for (j = 0; j < rightLength; j++)
     {
         rightHalf[j] = startingArray[middle + 1 + j];
     }
-    
+
     //Merge the temporary arrays back into the main array
     i = 0; //Initial index of leftHalf
     j = 0; //Initial index of rightHalf
     k = left; //Initial index of merged subarray
-    
+
     while (i < leftLength && j < rightLength)
     {
         if (leftHalf[i].votes <= rightHalf[j].votes)
@@ -152,15 +152,15 @@ void merge(candidate startingArray[], int left, int middle, int right)
         }
         k++;
     }
-    
-    //Copy any remaining elements of sub array if present 
+
+    //Copy any remaining elements of sub array if present
     while (i < leftLength)
     {
         startingArray[k] = leftHalf[i];
         i++;
         k++;
     }
-    
+
     while (j < rightLength)
     {
         startingArray[k] = rightHalf[j];
