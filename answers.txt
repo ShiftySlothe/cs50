@@ -2,10 +2,10 @@ sort1 uses: Merge
 
 How do you know?: Random and reversed data completed in a similar time
 
-sort2 uses: Bubble
+sort2 uses: Selection
 
 How do you know?: Much shorter time when testing somewhat sorted data
 
-sort3 uses: Selection
+sort3 uses: Bubble
 
 How do you know?: Time remained consistent across tests
