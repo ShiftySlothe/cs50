@@ -60,10 +60,22 @@ int main(int argc, string argv[])
             printf("Invalid vote.\n");
         }
     }
-
-    //Merge sort array
-    mergeSort(candidates, 0, candidate_count -1);
-
+    
+    bool allCandidatesTied = false;
+    for (int i = 1; i < voter_count; i++)
+    {
+        if (candidates[i - 1].votes == candidates[i].votes)
+            allCandidatesTied = true;
+        else
+            allCandidatesTied = false;
+    }
+    
+    if (!allCandidatesTied)
+    {
+        //Merge sort array
+        mergeSort(candidates, 0, candidate_count -1);
+    }
+    
     // Display winner of election
     print_winner();
 }
