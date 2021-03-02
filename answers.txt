@@ -1,8 +1,8 @@
-sort1 uses: Selection Sort
+sort1 uses: Bubble Sort
 
 How do you know?: Random and reversed data completed in a similar time
 
-sort2 uses: Bubble Sort
+sort2 uses: Selection Sort
 
 How do you know?: Much shorter time when testing somewhat sorted data
 
