@@ -60,9 +60,6 @@ int main(int argc, string argv[])
         }
     }
 
-
-    sortWinners();
-
     // Display winner of election
     print_winner();
 }
@@ -107,6 +104,7 @@ void sortWinners()
 // Print the winner (or winners) of the election
 void print_winner(void)
 {
+    sortWinners();
     int i = 1;
     int highscore = candidates[candidate_count - i].votes;
     printf("%s\n", candidates[candidate_count - i].name);
