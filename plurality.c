@@ -108,7 +108,7 @@ void sortWinners()
 void print_winner(void)
 {
     int i = 1;
-    int highscore = candidates[candidate_count - i].votes;
+    
     printf("%s\n", candidates[candidate_count - i].name);
     while (candidates[candidate_count - (i + 1)].votes >= highscore)
     {
