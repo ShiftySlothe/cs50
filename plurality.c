@@ -98,8 +98,8 @@ void sortWinners()
                 candidates[i] = candidates[i - 1];
                 candidates[i - 1] = temp;
             }
-            j++;
         }
+        j++;
     }
 
 }
@@ -115,5 +115,4 @@ void print_winner(void)
        i++;
        printf("%s\n", candidates[candidate_count - i].name);
     }
-
 }
