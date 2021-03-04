@@ -227,7 +227,7 @@ bool propose_link(int linkee, int originalCandidate)
 // Print the winner of the election
 void print_winner(void)
 {
-    int winner[MAX];
+    int winner/*[MAX]*/;
     int k = 0;
     //For each potential candidate
     for (int i = 0; i < candidate_count; i++)
@@ -236,19 +236,23 @@ void print_winner(void)
         //For each potential link to them
         for (int j = 0; j < candidate_count; j++)
         {
-            linksPresent = locked[j][i];
+            //If there is a link set true
+            if(locked[j][i])
+                linksPresent = true;
         }
-        if(linksPresent)
-        {
-            winner[k] = i;
-            k++;
-        }
-
+        //If there are no links present, winner found
+        if(!linksPresent)
+                {
+                    winner/*[k]*/ = i;
+                    //k++;
+                }
     }
-    
+    /*
     for (int l = k; l > -1; l--)
     {
          printf("%s\n", candidates[winner[l]]);   
     }
+    */
+    printf("%s\n", candidates[winner]);
 }
 
