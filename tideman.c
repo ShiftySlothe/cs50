@@ -158,7 +158,7 @@ void add_pairs(void)
 void sort_pairs(void)
 {
     int swapCounter = -1;
-    while(swapCounter != 0)
+    while (swapCounter != 0)
     {
         swapCounter = 0;
         //For each pair in pairs (bar the last)
@@ -215,7 +215,9 @@ bool propose_link(int linkee, int originalCandidate)
         {
             //If the link links back to origianl
             if (i == originalCandidate)
-                return false;
+            {
+                return false;                
+            }
             //Check any onward links until there are none
             nonCircular = propose_link(i, originalCandidate);
         }
@@ -237,22 +239,17 @@ void print_winner(void)
         for (int j = 0; j < candidate_count; j++)
         {
             //If there is a link set true
-            if(locked[j][i])
-                linksPresent = true;
+            if (locked[j][i])
+            {
+                linksPresent = true;            
+            }
         }
         //If there are no links present, winner found
-        if(!linksPresent)
-                {
-                    winner/*[k]*/ = i;
-                    //k++;
-                }
+        if (!linksPresent)
+        {
+            winner = i;
+        }
     }
-    /*
-    for (int l = k; l > -1; l--)
-    {
-         printf("%s\n", candidates[winner[l]]);   
-    }
-    */
     printf("%s\n", candidates[winner]);
 }
 
