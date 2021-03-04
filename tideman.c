@@ -173,7 +173,7 @@ void sort_pairs(void)
                 //Swap the pairs
                 swapCounter++;
                 pair temp = pairs[i + 1];
-                pairs[i] = pairs[i + 1];
+                pairs[i + 1] =  pairs[i];
                 pairs[i] = temp;
             }
         }
