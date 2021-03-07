@@ -108,10 +108,10 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
     }
 
     //For each row in image
-    for (int i = 0; i < height - 1; i++)
+    for (int i = 0; i < height; i++)
     {
         //For each collumn in image
-        for (int j = 0; j < width - 1; j++)
+        for (int j = 0; j < width; j++)
         {
             //Set the image equal to the temp[]
             image[i][j] = tempImage[i * width + j];
