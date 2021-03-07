@@ -10,7 +10,10 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
         //For each collumn 
         for (int j = 0; j < width - 1; j++)
         {
+            //Calculate average RGB
             averageRGB = (image[i][j].rgbtBlue + image[i][j].rgbtGreen + image[i][j].rgbtRed) / 3;
+            
+            //Set each pixel to the average
             image[i][j].rgbtBlue = averageRGB;
             image[i][j].rgbtGreen = averageRGB;
             image[i][j].rgbtRed = averageRGB;
