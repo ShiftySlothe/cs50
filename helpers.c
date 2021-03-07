@@ -233,7 +233,8 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
                         gy.rgbtBlue += image[i + k][j + l].rgbtBlue * gyValues[k + 1][l + 1];
                     }
                 }
- //Set the overall values to a float
+                
+                 //Set the overall values to a float
                 float redGX = (float)gx.rgbtRed;
                 float greenGX = (float)gx.rgbtGreen;
                 float blueGX = (float)gx.rgbtBlue;
@@ -242,9 +243,9 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
                 float blueGY = (float)gy.rgbtBlue;
                 
                 //Combine two values using given formula 
-                float redCombinedValue = round(sqrt(redGX * redGX + redGY * redGY));
-                float greenCombinedValue = round(sqrt(greenGX * greenGX + greenGY * greenGY));
-                float blueCombinedValue = round(sqrt(blueGX * blueGX + blueGY * blueGY));
+                int redCombinedValue = round(sqrt(redGX * redGX + redGY * redGY));
+                int greenCombinedValue = round(sqrt(greenGX * greenGX + greenGY * greenGY));
+                int blueCombinedValue = round(sqrt(blueGX * blueGX + blueGY * blueGY));
                 
                 redCombinedValue = (redCombinedValue > 255) ? 255 : redCombinedValue;
                 blueCombinedValue = (blueCombinedValue > 255) ? 255 : blueCombinedValue;
@@ -254,6 +255,28 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
                 tempImage[centreHeightIndex * width + centreWidthIndex].rgbtRed = redCombinedValue; 
                 tempImage[centreHeightIndex * width + centreWidthIndex].rgbtBlue = blueCombinedValue; 
                 tempImage[centreHeightIndex * width + centreWidthIndex].rgbtGreen = greenCombinedValue; 
+                  /*          // Calculate Sobel operator
+                int red = round(sqrt(Gx_red * Gx_red + Gy_red * Gy_red));
+                int green = round(sqrt(Gx_green * Gx_green + Gy_green * Gy_green));
+                int blue = round(sqrt(Gx_blue * Gx_blue + Gy_blue * Gy_blue));
+                // Cap at 255
+                if (red > 255)
+                {
+                    red = 255;
+                }
+                if (green > 255)
+                {
+                    green = 255;
+                }
+                if (blue > 255)
+                {
+                    blue = 255;
+                }
+                
+                // Assign new values to pixels
+                tempImage[i* width + j].rgbtRed = red;
+                tempImage[i* width + j].rgbtGreen = green;
+                tempImage[i* width + j].rgbtBlue = blue; */
             }
         }
     }
