@@ -38,7 +38,7 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
         for (int j = 0; j < width; j++)
         {
             //Set the temp[] to the horizontal mirror pixel 
-            tempImage[i * width + j] = image[i][width - j];
+            tempImage[i * width + j] = image[i][width - j - 1];
         }
     }
     
@@ -63,10 +63,10 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
 tempImage = (RGBTRIPLE *)malloc(sizeof(RGBTRIPLE) * height * width);
     
     //For each row in image
-    for (int i = 0; i < height - 1; i++)
+    for (int i = 0; i < height; i++)
     {
         //For each collumn in image
-        for (int j = 0; j < width - 1; j++)
+        for (int j = 0; j < width; j++)
         {
             //Number of pixels used to calculate average
             int pixelCounter = 0;
