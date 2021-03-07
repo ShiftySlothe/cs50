@@ -162,12 +162,12 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
                     //For the surrounding 3 collums;
                     for (int currentWidthIndex = centreWidthIndex - 1; currentWidthIndex < centreWidthIndex + 2; currentWidthIndex++)
                     {
-                        if(currentHeightIndex < height && currentWidthIndex < width && currentHeightIndex >= 0 && currentWidthIndex >= 0)
+                        if (currentHeightIndex < height && currentWidthIndex < width && currentHeightIndex >= 0 && currentWidthIndex >= 0)
                         {
                             //Calculate Gx
                             gxRed += image[currentHeightIndex][currentWidthIndex].rgbtRed * gxValues[i][j];
                             gxGreen += image[currentHeightIndex][currentWidthIndex].rgbtGreen * gxValues[i][j];
-                            gxBlue += image[currentHeightIndex][currentWidthIndex].rgbtBlue *gxValues[i][j];
+                            gxBlue += image[currentHeightIndex][currentWidthIndex].rgbtBlue * gxValues[i][j];
                             //Calculate Gy
                             gyRed += image[currentHeightIndex][currentWidthIndex].rgbtRed * gyValues[i][j];
                             gyGreen += image[currentHeightIndex][currentWidthIndex].rgbtGreen * gyValues[i][j];
