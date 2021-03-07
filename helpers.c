@@ -7,10 +7,10 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
 {
     float averageRGB;
     //For each row
-    for (int i = 0; i < height - 1; i++)
+    for (int i = 0; i < height; i++)
     {
         //For each collumn 
-        for (int j = 0; j < width - 1; j++)
+        for (int j = 0; j < width; j++)
         {
             //Calculate average RGB
             averageRGB = roundf(((float)image[i][j].rgbtBlue + (float)image[i][j].rgbtGreen + (float)image[i][j].rgbtRed) / 3);
