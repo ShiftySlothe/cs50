@@ -147,6 +147,7 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
         for (int centreWidthIndex = 0; centreWidthIndex < width; centreWidthIndex++)
         {
             {
+                /*
                 //Set all values to 0
                 gx = black;
                 gy = black;
@@ -165,38 +166,101 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
                         {
                             //Calculate Gx
                             gx.rgbtRed += image[currentHeightIndex][currentWidthIndex].rgbtRed * gxValues[i][j];
-                            gx.rgbtBlue += image[currentHeightIndex][currentWidthIndex].rgbtBlue *gxValues[i][j];
                             gx.rgbtGreen += image[currentHeightIndex][currentWidthIndex].rgbtGreen * gxValues[i][j];
+                            gx.rgbtBlue += image[currentHeightIndex][currentWidthIndex].rgbtBlue *gxValues[i][j];
                             //Calculate Gy
                             gy.rgbtRed += image[currentHeightIndex][currentWidthIndex].rgbtRed * gyValues[i][j];
-                            gy.rgbtBlue += image[currentHeightIndex][currentWidthIndex].rgbtBlue * gyValues[i][j];
                             gy.rgbtGreen += image[currentHeightIndex][currentWidthIndex].rgbtGreen * gyValues[i][j];
+                            gy.rgbtBlue += image[currentHeightIndex][currentWidthIndex].rgbtBlue * gyValues[i][j];
                         }
                         j++;
                     }
                     i++;
                 }
-                
                 //Set the overall values to a float
                 float redGX = (float)gx.rgbtRed;
-                float blueGX = (float)gx.rgbtBlue;
                 float greenGX = (float)gx.rgbtGreen;
+                float blueGX = (float)gx.rgbtBlue;
                 float redGY = (float)gy.rgbtRed;
-                float blueGY = (float)gy.rgbtBlue;
                 float greenGY = (float)gy.rgbtGreen;
+                float blueGY = (float)gy.rgbtBlue;
                 
                 //Combine two values using given formula 
                 float redCombinedValue = round(sqrt(redGX * redGX + redGY * redGY));
-                float blueCombinedValue = round(sqrt(blueGX * blueGX + blueGY * blueGY));
                 float greenCombinedValue = round(sqrt(greenGX * greenGX + greenGY * greenGY));
+                float blueCombinedValue = round(sqrt(blueGX * blueGX + blueGY * blueGY));
                 
                 redCombinedValue = (redCombinedValue > 255) ? 255 : redCombinedValue;
                 blueCombinedValue = (blueCombinedValue > 255) ? 255 : blueCombinedValue;
                 greenCombinedValue = (greenCombinedValue > 255) ? 255 : greenCombinedValue;
+                
                 //Set values to temp array
                 tempImage[centreHeightIndex * width + centreWidthIndex].rgbtRed = redCombinedValue; 
                 tempImage[centreHeightIndex * width + centreWidthIndex].rgbtBlue = blueCombinedValue; 
                 tempImage[centreHeightIndex * width + centreWidthIndex].rgbtGreen = greenCombinedValue; 
+            }
+                */
+                
+                    // Loop through rows
+        for (int i = 0; i < height; i++)
+        {
+            // Loop through columns
+            for (int j = 0; j < width; j++)
+            {
+                // Initialise ints
+                float Gx_red;
+                float Gx_blue;
+                float Gx_green;
+                float Gy_red;
+                float Gy_blue;
+                float Gy_green;
+                Gx_red = Gx_blue = Gx_green = Gy_red = Gy_blue = Gy_green = 0;
+                // For each pixel, loop vertical and horizontal
+                for (int k = -1; k < 2; k++)
+                {
+                    for (int l = -1; l < 2; l++)
+                    {
+                        // Check if pixel is outside rows
+                        if (i + k < 0 || i + k >= height)
+                        {
+                            continue;
+                        }
+                        // Check if pixel is outside columns
+                        if (j + l < 0 || j + l >= width)
+                        {
+                            continue;
+                        }
+                        // Otherwise add to sums
+                        Gx_red += image[i + k][j + l].rgbtRed * gxValues[k + 1][l + 1];
+                        Gx_green += image[i + k][j + l].rgbtGreen * gxValues[k + 1][l + 1];
+                        Gx_blue += image[i + k][j + l].rgbtBlue * gxValues[k + 1][l + 1];
+                        Gy_red += image[i + k][j + l].rgbtRed * gyValues[k + 1][l + 1];
+                        Gy_green += image[i + k][j + l].rgbtGreen * gyValues[k + 1][l + 1];
+                        Gy_blue += image[i + k][j + l].rgbtBlue * gyValues[k + 1][l + 1];
+                    }
+                }
+                            // Calculate Sobel operator
+                int red = round(sqrt(Gx_red * Gx_red + Gy_red * Gy_red));
+                int green = round(sqrt(Gx_green * Gx_green + Gy_green * Gy_green));
+                int blue = round(sqrt(Gx_blue * Gx_blue + Gy_blue * Gy_blue));
+                // Cap at 255
+                if (red > 255)
+                {
+                    red = 255;
+                }
+                if (green > 255)
+                {
+                    green = 255;
+                }
+                if (blue > 255)
+                {
+                    blue = 255;
+                }
+                
+                // Assign new values to pixels
+                tempImage[i* width + j].rgbtRed = red;
+                tempImage[i* width + j].rgbtGreen = green;
+                tempImage[i* width + j].rgbtBlue = blue;
             }
         }
     }
@@ -212,4 +276,4 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
         }
     }
     return;
-}
+}}}
