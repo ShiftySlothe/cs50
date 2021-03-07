@@ -132,6 +132,7 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
     black.rgbtGreen = 0;
     black.rgbtRed = 0;
     black.rgbtBlue = 0;
+    
     //Allocate memory for temp image[]
     RGBTRIPLE *tempImage;
     tempImage = (RGBTRIPLE *)malloc(sizeof(RGBTRIPLE) * height * width);
@@ -185,9 +186,9 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
                 float greenGY = (float)gy.rgbtGreen;
                 
                 //Combine two values using given formula 
-                float redCombinedValue = roundf(sqrtf((powf(redGX, 2)) + powf(redGY, 2)));
-                float blueCombinedValue = roundf(sqrtf((powf(blueGX, 2)) + powf(blueGY, 2)));
-                float greenCombinedValue = roundf(sqrtf((powf(greenGX, 2)) + powf(greenGY, 2)));
+                float redCombinedValue = round(sqrt(redGX * redGX + redGY * redGY));
+                float blueCombinedValue = round(sqrt(blueGX * blueGX + blueGY * blueGY));
+                float greenCombinedValue = round(sqrt(greenGX * greenGX + greenGY * greenGY));
                 
                 redCombinedValue = (redCombinedValue > 255) ? 255 : redCombinedValue;
                 blueCombinedValue = (blueCombinedValue > 255) ? 255 : blueCombinedValue;
