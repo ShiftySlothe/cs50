@@ -123,6 +123,10 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
 // Detect edges
 void edges(int height, int width, RGBTRIPLE image[height][width])
 {
+    //Arrays for calculating Gx Gy
+    int gxValues[3][3] = {{-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
+    int gyValues[3][3] = {{-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
+    
     //Black RGB value
     RGBTRIPLE black;
     black.rgbtGreen = 0;
@@ -145,104 +149,31 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
                 //Set all values to 0
                 gx = black;
                 gy = black;
+                
+                //Counter for row loop
+                int i = 0;
                 //For the surrounding 3 rows
                 for (int currentHeightIndex = centreHeightIndex - 1; currentHeightIndex < centreHeightIndex + 2; currentHeightIndex++)
                 {
+                    //Counter for collum loop
+                    int j = 0;
                     //For the surrounding 3 collums;
                     for (int currentWidthIndex = centreWidthIndex - 1; currentWidthIndex < centreWidthIndex + 2; currentWidthIndex++)
                     {
-
                         if(currentHeightIndex < height && currentWidthIndex < width && currentHeightIndex >= 0 && currentWidthIndex >= 0)
                         {
-                            //3X3 (height, width) grid with (0,0) centre (-1, -1) bottom left, (1, 1) top right
-                            switch(centreHeightIndex - currentHeightIndex)
-                            {
-                                case -1:
-                                    switch(currentWidthIndex - centreWidthIndex)
-                                    {
-                                        //(-1, -1) 
-                                        case -1:
-                                            gx.rgbtBlue += -image[currentHeightIndex][currentWidthIndex].rgbtBlue;
-                                            gx.rgbtRed += -image[currentHeightIndex][currentWidthIndex].rgbtRed;
-                                            gx.rgbtGreen += -image[currentHeightIndex][currentWidthIndex].rgbtGreen;
-                                            
-                                            gy.rgbtBlue += image[currentHeightIndex][currentWidthIndex].rgbtBlue;
-                                            gy.rgbtRed += image[currentHeightIndex][currentWidthIndex].rgbtRed;
-                                            gy.rgbtGreen += image[currentHeightIndex][currentWidthIndex].rgbtGreen;
-                                            break;
-                                        //(-1, 0)
-                                        case 0:
-                                            gy.rgbtBlue += image[currentHeightIndex][currentWidthIndex].rgbtBlue * 2;
-                                            gy.rgbtRed += image[currentHeightIndex][currentWidthIndex].rgbtRed * 2;
-                                            gy.rgbtGreen += image[currentHeightIndex][currentWidthIndex].rgbtGreen * 2;
-                                            break;
-                                        //(-1, 1)
-                                        case 1:
-                                                
-                                            gx.rgbtBlue += image[currentHeightIndex][currentWidthIndex].rgbtBlue;
-                                            gx.rgbtRed += image[currentHeightIndex][currentWidthIndex].rgbtRed;
-                                            gx.rgbtGreen += image[currentHeightIndex][currentWidthIndex].rgbtGreen;
-                                            
-                                            gy.rgbtBlue += image[currentHeightIndex][currentWidthIndex].rgbtBlue;
-                                            gy.rgbtRed += image[currentHeightIndex][currentWidthIndex].rgbtRed;
-                                            gy.rgbtGreen += image[currentHeightIndex][currentWidthIndex].rgbtGreen;;
-                                            break;
-                                    }
-                                    break;
-                                case 0:
-                                    switch(currentWidthIndex - centreWidthIndex)
-                                    {
-                                        //(0, -1)
-                                        case -1:
-                                                gx.rgbtBlue += image[currentHeightIndex][currentWidthIndex].rgbtBlue * -2;
-                                                gx.rgbtRed += image[currentHeightIndex][currentWidthIndex].rgbtRed * -2;
-                                                gx.rgbtGreen += image[currentHeightIndex][currentWidthIndex].rgbtGreen * -2;                                        
-                                            break;
-                                        //(0, 0);
-                                        case 0:
-                                            break;
-                                        //(0, 1)        
-                                        case 1:
-                                                gx.rgbtBlue += image[currentHeightIndex][currentWidthIndex].rgbtBlue * 2;
-                                                gx.rgbtRed += image[currentHeightIndex][currentWidthIndex].rgbtRed * 2;
-                                                gx.rgbtGreen += image[currentHeightIndex][currentWidthIndex].rgbtGreen * 2;
-                                            break;
-                                    }
-                                    break;
-                                case 1:
-                                    switch(currentWidthIndex - centreWidthIndex)
-                                    {
-                                        //(1, -1)
-                                        case -1:
-                                            gx.rgbtBlue += -image[currentHeightIndex][currentWidthIndex].rgbtBlue;
-                                            gx.rgbtRed += -image[currentHeightIndex][currentWidthIndex].rgbtRed;
-                                            gx.rgbtGreen += -image[currentHeightIndex][currentWidthIndex].rgbtGreen;
-                                            
-                                            gy.rgbtBlue += -image[currentHeightIndex][currentWidthIndex].rgbtBlue;
-                                            gy.rgbtRed += -image[currentHeightIndex][currentWidthIndex].rgbtRed;
-                                            gy.rgbtGreen += -image[currentHeightIndex][currentWidthIndex].rgbtGreen;            
-                                            break;
-                                        //(1, 0)
-                                        case 0:
-                                            gy.rgbtBlue += image[currentHeightIndex][currentWidthIndex].rgbtBlue * - 2;
-                                            gy.rgbtRed += image[currentHeightIndex][currentWidthIndex].rgbtRed * -2;
-                                            gy.rgbtGreen += image[currentHeightIndex][currentWidthIndex].rgbtGreen* -2;    
-                                            break;
-                                        //(1, 1)
-                                        case 1:
-                                            gx.rgbtBlue += image[currentHeightIndex][currentWidthIndex].rgbtBlue;
-                                            gx.rgbtRed += image[currentHeightIndex][currentWidthIndex].rgbtRed;
-                                            gx.rgbtGreen += image[currentHeightIndex][currentWidthIndex].rgbtGreen;
-                                            
-                                            gy.rgbtBlue += -image[currentHeightIndex][currentWidthIndex].rgbtBlue;
-                                            gy.rgbtRed += -image[currentHeightIndex][currentWidthIndex].rgbtRed;
-                                            gy.rgbtGreen += -image[currentHeightIndex][currentWidthIndex].rgbtGreen;  
-                                            break;
-                                    }
-                                    break;
-                            } 
+                            //Calculate Gx
+                            gx.rgbtRed += image[currentHeightIndex][currentWidthIndex].rgbtRed * gxValues[i][j];
+                            gx.rgbtBlue += image[currentHeightIndex][currentWidthIndex].rgbtBlue *gxValues[i][j];
+                            gx.rgbtGreen += image[currentHeightIndex][currentWidthIndex].rgbtGreen * gxValues[i][j];
+                            //Calculate Gy
+                            gy.rgbtRed += image[currentHeightIndex][currentWidthIndex].rgbtRed * gyValues[i][j];
+                            gy.rgbtBlue += image[currentHeightIndex][currentWidthIndex].rgbtBlue * gyValues[i][j];
+                            gy.rgbtGreen += image[currentHeightIndex][currentWidthIndex].rgbtGreen * gyValues[i][j];
                         }
+                        j++;
                     }
+                    i++;
                 }
                 
                 //Set the overall values to a float
@@ -258,6 +189,9 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
                 float blueCombinedValue = roundf(sqrtf((powf(blueGX, 2)) + powf(blueGY, 2)));
                 float greenCombinedValue = roundf(sqrtf((powf(greenGX, 2)) + powf(greenGY, 2)));
                 
+                redCombinedValue = (redCombinedValue > 255) ? 255 : redCombinedValue;
+                blueCombinedValue = (blueCombinedValue > 255) ? 255 : blueCombinedValue;
+                greenCombinedValue = (greenCombinedValue > 255) ? 255 : greenCombinedValue;
                 //Set values to temp array
                 tempImage[centreHeightIndex * width + centreWidthIndex].rgbtRed = redCombinedValue; 
                 tempImage[centreHeightIndex * width + centreWidthIndex].rgbtBlue = blueCombinedValue; 
