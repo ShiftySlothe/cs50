@@ -27,5 +27,5 @@ int main(void)
     }
 
     // Print number of years
-    printf("Years : %i", numberOfYears);
+    printf("Years: %i", numberOfYears);
 }
