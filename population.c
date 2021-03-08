@@ -7,10 +7,11 @@ int main(void)
     int endSize = 0;
     int numberOfYears = 0;
     //Prompt for start size
-    while (startSize > 1 && startSize < 8)
+    do
     {
         startSize = get_int("Population start size: ");
     }
+    while (startSize < 1 || startSize > 8);
     // Prompt for end size
     do
     {
