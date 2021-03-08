@@ -26,7 +26,7 @@ int compute_score(string word)
 {
     int score = 0;
     
-    for(int i = 0, length = strlen(word); i < length; i++)
+    for (int i = 0, length = strlen(word); i < length; i++)
     {
         //Get each character of the word
         char currentLetter = word[i];
@@ -35,7 +35,7 @@ int compute_score(string word)
         //Using ASCII value, make A = 0 and Z = 25 
         int currentLetterValue = currentLetter - 65;
         //If the Char is between those two numbers, add to score
-        if(currentLetterValue >= 0 && currentLetterValue < 26)
+        if (currentLetterValue >= 0 && currentLetterValue < 26)
         {
             score += POINTS[currentLetterValue];
         }
