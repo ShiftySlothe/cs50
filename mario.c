@@ -9,7 +9,7 @@ int main(void)
     do{
       sizeOfTower = get_int("How tall do you want your tower? (1 - 8)");
     }
-    while(sizeOfTower > 8 || sizeOfTower < 0);
+    while(sizeOfTower > 8 || sizeOfTower < 1);
 
     //For each row
     for (int i = 1; i <= sizeOfTower; i++)
