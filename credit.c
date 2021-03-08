@@ -38,7 +38,10 @@ int main(void)
     {
         isCreditCard = CheckStartingCharacters();
     }
-    
+    if (isCreditCard)
+    {
+       isCreditCard = CheckLuhnsTest();
+    }
     //Check for credit card
     if (isCreditCard)
     {
