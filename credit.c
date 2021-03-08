@@ -40,7 +40,7 @@ int main(void)
     }
     if (isCreditCard)
     {
-       isCreditCard = CheckLuhnsTest();
+        isCreditCard = CheckLuhnsTest();
     }
     //Check for credit card
     if (isCreditCard)
