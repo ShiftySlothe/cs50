@@ -49,7 +49,7 @@ person *create_family(int generations)
         _person -> parents[1] = create_family(generations - 1);
         //Randomly assign child alleles based on parents
         _person -> alleles[0] = _person -> parents[0] -> alleles[rand() % 2];
-        _person -> alleles[0] = _person -> parents[1] -> alleles[rand() % 2];
+        _person -> alleles[1] = _person -> parents[1] -> alleles[rand() % 2];
     }
 
     // Generation without parent data
