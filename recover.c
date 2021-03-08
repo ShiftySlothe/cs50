@@ -33,20 +33,26 @@ int main(int argc, char *argv[])
     //Read the file to buffer
     while (fread(&buffer, 512, 1, inputFile) == 1)
     {
-        if(buffer[0] == 0xff && buffer[1] == 0xd8 && buffer[2] == 0xff && (buffer[3] & 0xf0) == 0xe0)
+        //If we find a JPEG
+        if (buffer[0] == 0xff && buffer[1] == 0xd8 && buffer[2] == 0xff && (buffer[3] & 0xf0) == 0xe0)
         {
-            if(numberOfJPEG != 0)
+            //And it's not the first
+            if (numberOfJPEG != 0)
             {
                 fclose(img);
             }
+            //Set file name
             sprintf(currentFileName, "%03i.jpg", numberOfJPEG);
+            //Open file
             img = fopen(currentFileName, "w");
             numberOfJPEG++;
             jpegFound = true;
         }
         
-        if(jpegFound)
+        if (jpegFound)
+        {
             fwrite(buffer, 512, 1, img);
+        }
     }
     fclose(img);
 }
