@@ -11,7 +11,7 @@ int main(void)
     {
         startSize = get_int("Population start size: ");
     }
-    while (startSize < 1 || startSize >= 10);
+    while (startSize < 9);
     // Prompt for end size
     do
     {
