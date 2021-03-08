@@ -11,7 +11,7 @@ int main(void)
     {
         startSize = get_int("Population start size: ");
     }
-    while (startSize < 1 || startSize > 8);
+    while (startSize < 1 || startSize >= 10);
     // Prompt for end size
     do
     {
@@ -27,5 +27,5 @@ int main(void)
     }
 
     // Print number of years
-    printf("Years : %i", numberOfYears);
+    printf("Years : %i\n", numberOfYears);
 }
