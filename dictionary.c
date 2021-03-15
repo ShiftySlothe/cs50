@@ -1,5 +1,6 @@
 // Implements a dictionary's functionality
 
+#include <stdbool.h>
 #define _GNU_SOURCE // for rawmemchr - GNU extension
 #include <sys/stat.h> // for stat struct
 #include <time.h>
@@ -7,17 +8,33 @@
 #include <stdlib.h>
 #include <string.h> // for memchr and strcmp
 #include <stdint.h> // for murmur hash
-#include "dictionary.h"
-#include <stdbool.h>
 #include <pthread.h> // todo
+#include "dictionary.h"
 
-#define HASH_TABLE_SIZE 15485863 //Play around with this
+typedef struct node
+{
+    char word[LENGTH - 5];
+    struct node *next;
+}
+node;
+
+typedef struct list
+{
+    int position[5];
+    struct list *next;
+}
+collisionsList;
+
+node* CreateNode(char * wordToAdd, int wordLength);
+collisionsList* CreateCollisionsList(int indicie[5]);
+
+node* AddNode(node* head, char * wordToAdd, int wordLength);
+collisionsList* AddCollisionsList(collisionsList* head, int indicie[5]);
+
+void deleteHashtable(node* start);
 
 // for bitwise OR to lowercase
 #define BITS 32
-
-// Number of buckets in hash table
-const unsigned int N = 1;
 
 //Hash table 0 - 25 = A - Z ' =  26
 node *tableOverFive[27][27][27][27][27] = {{{{{NULL}}}}};
@@ -38,11 +55,10 @@ int collisionsNumber = 0;
 int wordsLongerThan5 = 0;
 float wordLengthTotal = 0;
 
-int seed = 71; //Play around with this
-
 // Returns true if word is in dictionary, else false
 bool check(const char *word)
 {
+    
     currentWordLength = strlen(word);
     if (currentWordLength > 5)
     {
@@ -80,9 +96,10 @@ bool check(const char *word)
     return false;
 }
 
-// Hashes character to a number
+// Hashes word to a number
 unsigned int hash(const char *word)
 {
+    
     if (word[0] == '\'')
     {
         return 26;
@@ -101,12 +118,10 @@ unsigned int hash(const char *word)
     return -50;
 }
 
-
-
 // Loads dictionary into memory, returning true if successful, else false
 bool load(const char *dictionary)
 {
-    struct stat inputFile_Stat;
+       struct stat inputFile_Stat;
     int index = 0;
     //Open the file
     FILE* dictPointer = fopen(dictionary, "r");
@@ -200,6 +215,39 @@ bool load(const char *dictionary)
     return true;
 }
 
+// Returns number of words in dictionary if loaded, else 0 if not yet loaded
+unsigned int size(void)
+{
+    return numberOfWords;
+}
+
+// Unloads dictionary from memory, returning true if successful, else false
+bool unload(void)
+{
+       while (currentCollisionsList -> next != NULL)
+    {
+  
+        deleteHashtable(tableOverFive
+        [currentCollisionsList -> position[0]]
+        [currentCollisionsList -> position[1]]
+        [currentCollisionsList -> position[2]]
+        [currentCollisionsList -> position[3]]
+        [currentCollisionsList -> position[4]]
+        );
+        
+        previousCollisionsList = currentCollisionsList;
+        currentCollisionsList = currentCollisionsList -> next;
+        free(previousCollisionsList);
+    }
+    /*
+    float averageWordLength = wordLengthTotal / numberOfWords;
+    printf("Collisisons: %i", collisionsNumber);
+    printf("Words Longer Than 5: %i", wordsLongerThan5);
+    printf("Average word length: %f", averageWordLength);
+    */
+    return true;
+}
+
 
 //Creates a new node for a linked list that is null
 node* CreateNode(char * wordToAdd, int wordLength)
@@ -267,40 +315,6 @@ collisionsList* AddCollisionsList(collisionsList* head, int indicie[5])
     memcpy(temp -> position, indicie, 40);
     temp -> next = head;
     return temp;
-}
-
-// Returns number of words in dictionary if loaded, else 0 if not yet loaded
-unsigned int size(void)
-{
-    return numberOfWords;
-}
-
-//We could store all the collisions arrays numbers during load and then unload them directly to save time
-// Unloads dictionary from memory, returning true if successful, else false
-bool unload(void)
-{
-    while (currentCollisionsList -> next != NULL)
-    {
-  
-        deleteHashtable(tableOverFive
-        [currentCollisionsList -> position[0]]
-        [currentCollisionsList -> position[1]]
-        [currentCollisionsList -> position[2]]
-        [currentCollisionsList -> position[3]]
-        [currentCollisionsList -> position[4]]
-        );
-        
-        previousCollisionsList = currentCollisionsList;
-        currentCollisionsList = currentCollisionsList -> next;
-        free(previousCollisionsList);
-    }
-    /*
-    float averageWordLength = wordLengthTotal / numberOfWords;
-    printf("Collisisons: %i", collisionsNumber);
-    printf("Words Longer Than 5: %i", wordsLongerThan5);
-    printf("Average word length: %f", averageWordLength);
-    */
-    return true;
 }
 
 void deleteHashtable(node* start)
