@@ -241,6 +241,7 @@ bool unload(void)
         currentCollisionsList = currentCollisionsList -> next;
         free(previousCollisionsList);
     }
+    free(currentCollisionsList);
     /*
     float averageWordLength = wordLengthTotal / numberOfWords;
     printf("Collisisons: %i", collisionsNumber);
