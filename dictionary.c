@@ -70,9 +70,11 @@ bool check(const char *word)
         traversalNode = tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]][currentWordFirst5[3]][currentWordFirst5[4]];
         while (traversalNode != NULL)
         {
-            if (memcmp(word, (traversalNode -> word), currentWordLength) == 0)
+            
+            if (memcmp(word, (traversalNode -> word), currentWordLength) == 0 && traversalNode -> word[currentWordLength + 1] == '\0')
             {
-                return true;
+                
+                    return true;
             }
             else
             {
