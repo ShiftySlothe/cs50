@@ -15,21 +15,22 @@ typedef struct node
 {
     char word[LENGTH];
     struct node *next;
+    struct node *previous;
 }
 node;
 
 typedef struct list
 {
-    int position[5];
+    int position[3];
     struct list *next;
 }
 collisionsList;
 
 node* CreateNode(char * wordToAdd, int wordLength);
-collisionsList* CreateCollisionsList(int indicie[5]);
+collisionsList* CreateCollisionsList(int indicie[3]);
 
 node* AddNode(node* head, char * wordToAdd, int wordLength);
-collisionsList* AddCollisionsList(collisionsList* head, int indicie[5]);
+collisionsList* AddCollisionsList(collisionsList* head, int indicie[3]);
 
 void deleteHashtable(node* start);
 
@@ -37,10 +38,10 @@ void deleteHashtable(node* start);
 #define BITS 32
 
 //Hash table 0 - 25 = A - Z ' =  26
-node *tableOverFive[27][27][27][27][27] = {{{{{NULL}}}}};
+node *tableOverFive[27][27][27] = {{{NULL}}};
 
 //Hash table 1 - 26 = A - Z 27 =  ' No char=  0
-bool tableUnderFive[28][28][28][28][28] = {{{{{NULL}}}}};
+bool tableUnderFive[28][28][28] = {{{NULL}}};
 
 node *traversalNode;
 
@@ -48,7 +49,7 @@ collisionsList* currentCollisionsList;
 collisionsList* previousCollisionsList;
 
 //Array to store current words first 5 ASCII values
-int currentWordFirst5[5];
+int currentWordFirst5[3];
 int currentWordLength;
 int numberOfWords =0;
 int collisionsNumber = 0;
@@ -58,27 +59,48 @@ float wordLengthTotal = 0;
 // Returns true if word is in dictionary, else false
 bool check(const char *word)
 {
-    
     currentWordLength = strlen(word);
-    if (currentWordLength > 5)
+    char temp[currentWordLength];
+    for (int i = 0; i < currentWordLength; i++)
+    {
+        temp[i] = word[i] | BITS; 
+    }
+    
+    if (currentWordLength > 3)
     {
         //Set the first 5 values of the word to the first word array starting at the 5th indicy working down
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 3; i++)
         {
-            currentWordFirst5[4 - i] = hash(&word[i]);
+            currentWordFirst5[2 - i] = hash(&temp[i]);
         }
-        traversalNode = tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]][currentWordFirst5[3]][currentWordFirst5[4]];
+        traversalNode = tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]];
         while (traversalNode != NULL)
         {
-            
-            if (memcmp(word, (traversalNode -> word), currentWordLength) == 0 )
+            if (memcmp(temp, (traversalNode -> word), currentWordLength) == 0 )
             {
                 if(traversalNode -> word[currentWordLength + 1] != '\0')
                 {
                     traversalNode = traversalNode -> next;
                 }
                 else
-                    return true;
+                {
+                    //If we are not at the start of the list
+                    if (traversalNode -> previous != NULL)
+                    {
+                        traversalNode -> previous -> next = traversalNode -> next;
+                        if (traversalNode -> next != NULL)
+                        {
+                            traversalNode -> next -> previous = traversalNode -> previous;
+                        }
+                        //Set the current node's next to the start of the list
+                        traversalNode -> next = tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]];
+                        traversalNode -> previous = NULL;
+                        //Set the start of the list to the current node
+                        tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]] = traversalNode;
+                    }
+                    return true;   
+                }
+
             }
             else
             {
@@ -90,14 +112,14 @@ bool check(const char *word)
     else
     {
         //For the 5 dims of the array
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 3; i++)
         {
             //Hash the char at set to
-            currentWordFirst5[4 - i] = (i < currentWordLength) ? hash(&word[i]) + 1 : 0;
+            currentWordFirst5[2 - i] = (i < currentWordLength) ? hash(&temp[i]) + 1 : 0;
         }
 
         //Set the under five tables bool value to true
-        return tableUnderFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]][currentWordFirst5[3]][currentWordFirst5[4]];
+        return tableUnderFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]];
     }
     return false;
 }
@@ -176,39 +198,36 @@ bool load(const char *dictionary)
         currentWordLength = currentPos - wordStartPos;
         wordLengthTotal += (float)currentWordLength;
 
-        if (currentWordLength > 5)
+        if (currentWordLength > 3)
         {
-            wordsLongerThan5++;
             //Set the first 5 values of the word to the first word array starting at the 5th indicy working down
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 3; i++)
             {
-                currentWordFirst5[4 - i] = hash(&wordStartPos[i]);
+                currentWordFirst5[2 - i] = hash(&wordStartPos[i]);
             }
 
             //Check the over five tables ptr for null
-            if(tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]][currentWordFirst5[3]][currentWordFirst5[4]]== NULL)
+            if(tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]]== NULL)
             {
-                tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]][currentWordFirst5[3]][currentWordFirst5[4]] = CreateNode(wordStartPos, currentWordLength);
-                collisionsNumber++;
+                tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]] = CreateNode(wordStartPos, currentWordLength);
                 currentCollisionsList = AddCollisionsList(currentCollisionsList, currentWordFirst5);
             }
             else
             {
-                tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]][currentWordFirst5[3]][currentWordFirst5[4]] = AddNode(tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]][currentWordFirst5[3]][currentWordFirst5[4]], wordStartPos, currentWordLength);
-                collisionsNumber++;
+                tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]] = AddNode(tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]], wordStartPos, currentWordLength);
             }
         }
         else
         {
             //For the 5 dims of the array
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 3; i++)
             {
                 //Hash the char at set to
-                currentWordFirst5[4 - i] = (i < currentWordLength) ? hash(&wordStartPos[i]) + 1 : 0;
+                currentWordFirst5[2 - i] = (i < currentWordLength) ? hash(&wordStartPos[i]) + 1 : 0;
             }
 
             //Set the under five tables bool value to true
-            tableUnderFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]][currentWordFirst5[3]][currentWordFirst5[4]] = true;
+            tableUnderFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]] = true;
         }
 
         //Increment pointers
@@ -237,8 +256,6 @@ bool unload(void)
         [currentCollisionsList -> position[0]]
         [currentCollisionsList -> position[1]]
         [currentCollisionsList -> position[2]]
-        [currentCollisionsList -> position[3]]
-        [currentCollisionsList -> position[4]]
         );
         
         previousCollisionsList = currentCollisionsList;
@@ -246,12 +263,6 @@ bool unload(void)
         free(previousCollisionsList);
     }
     free(currentCollisionsList);
-    /*
-    float averageWordLength = wordLengthTotal / numberOfWords;
-    printf("Collisisons: %i", collisionsNumber);
-    printf("Words Longer Than 5: %i", wordsLongerThan5);
-    printf("Average word length: %f", averageWordLength);
-    */
     return true;
 }
 
@@ -272,8 +283,8 @@ node* CreateNode(char * wordToAdd, int wordLength)
     //Changed strlen(wordToAdd) + 1 to word Lenght +1 watch for seg fault
     //Copy the word to the node
     memcpy(temp -> word, wordToAdd, wordLength + 1);
-    temp -> word[wordLength + 1] ='\0';
     temp -> next = NULL;
+    temp -> previous = NULL;
     return temp;
 }
 
@@ -294,11 +305,13 @@ node* AddNode(node* head, char * wordToAdd, int wordLength)
     //Copy word to node
     memcpy(temp -> word, wordToAdd, wordLength + 1);
     temp -> next = head;
+    temp -> previous = NULL;
+    head -> previous = temp; 
     return temp;
 }
 
 //Creates a new node for a linked list that is null
-collisionsList* CreateCollisionsList(int indicie[5])
+collisionsList* CreateCollisionsList(int indicie[3])
 {
     //Allocate memory for node
     collisionsList* temp = malloc(sizeof(collisionsList));
@@ -310,13 +323,13 @@ collisionsList* CreateCollisionsList(int indicie[5])
 
     //Changed strlen(wordToAdd) + 1 to word Lenght +1 watch for seg fault
     //Copy the word to the node
-    memcpy(temp -> position, indicie, sizeof(int[5]));
+    memcpy(temp -> position, indicie, sizeof(int[3]));
     temp -> next = NULL;
     return temp;
 }
 
 // add a new node to an existing linked list, inlined for performance
-collisionsList* AddCollisionsList(collisionsList* head, int indicie[5])
+collisionsList* AddCollisionsList(collisionsList* head, int indicie[3])
 {
     //Allocate memory for node
     collisionsList* temp = malloc(sizeof(collisionsList));
@@ -326,7 +339,7 @@ collisionsList* AddCollisionsList(collisionsList* head, int indicie[5])
         exit(1);
     }
     //Copy word to node
-    memcpy(temp -> position, indicie, sizeof(int[5]));
+    memcpy(temp -> position, indicie, sizeof(int[3]));
     temp -> next = head;
     return temp;
 }
