@@ -13,7 +13,7 @@
 
 typedef struct node
 {
-    char word[LENGTH - 5];
+    char word[LENGTH];
     struct node *next;
 }
 node;
@@ -40,7 +40,7 @@ void deleteHashtable(node* start);
 node *tableOverFive[27][27][27][27][27] = {{{{{NULL}}}}};
 
 //Hash table 1 - 26 = A - Z 27 =  ' No char=  0
-bool tableUnderFive[28][28][28][28][28];
+bool tableUnderFive[28][28][28][28][28] = {{{{{NULL}}}}};
 
 node *traversalNode;
 
@@ -71,9 +71,13 @@ bool check(const char *word)
         while (traversalNode != NULL)
         {
             
-            if (memcmp(word, (traversalNode -> word), currentWordLength) == 0 && traversalNode -> word[currentWordLength + 1] == '\0')
+            if (memcmp(word, (traversalNode -> word), currentWordLength) == 0 )
             {
-                
+                if(traversalNode -> word[currentWordLength + 1] != '\0')
+                {
+                    traversalNode = traversalNode -> next;
+                }
+                else
                     return true;
             }
             else
@@ -255,6 +259,7 @@ bool unload(void)
 //Creates a new node for a linked list that is null
 node* CreateNode(char * wordToAdd, int wordLength)
 {
+    
     //Allocate memory for node
     node* temp = malloc(sizeof(node));
     if (temp == NULL)
@@ -262,10 +267,12 @@ node* CreateNode(char * wordToAdd, int wordLength)
         printf("Unable to allocate space.\n");
         exit(1);
     }
-
+    
+    temp-> word[wordLength + 1] = '\0';
     //Changed strlen(wordToAdd) + 1 to word Lenght +1 watch for seg fault
     //Copy the word to the node
     memcpy(temp -> word, wordToAdd, wordLength + 1);
+    temp -> word[wordLength + 1] ='\0';
     temp -> next = NULL;
     return temp;
 }
@@ -280,6 +287,10 @@ node* AddNode(node* head, char * wordToAdd, int wordLength)
         printf("Unable to allocated space.\n");
         exit(1);
     }
+    
+    temp-> word[wordLength + 1] = '\0';
+
+    
     //Copy word to node
     memcpy(temp -> word, wordToAdd, wordLength + 1);
     temp -> next = head;
@@ -299,7 +310,7 @@ collisionsList* CreateCollisionsList(int indicie[5])
 
     //Changed strlen(wordToAdd) + 1 to word Lenght +1 watch for seg fault
     //Copy the word to the node
-    memcpy(temp -> position, indicie, 40);
+    memcpy(temp -> position, indicie, sizeof(int[5]));
     temp -> next = NULL;
     return temp;
 }
@@ -315,7 +326,7 @@ collisionsList* AddCollisionsList(collisionsList* head, int indicie[5])
         exit(1);
     }
     //Copy word to node
-    memcpy(temp -> position, indicie, 40);
+    memcpy(temp -> position, indicie, sizeof(int[5]));
     temp -> next = head;
     return temp;
 }
