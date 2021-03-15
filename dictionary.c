@@ -26,13 +26,13 @@ typedef struct list
 }
 collisionsList;
 
-node* CreateNode(char * wordToAdd, int wordLength);
-collisionsList* CreateCollisionsList(int indicie[3]);
+node *CreateNode(char *wordToAdd, int wordLength);
+collisionsList *CreateCollisionsList(int indicie[3]);
 
-node* AddNode(node* head, char * wordToAdd, int wordLength);
-collisionsList* AddCollisionsList(collisionsList* head, int indicie[3]);
+node *AddNode(node *head, char *wordToAdd, int wordLength);
+collisionsList *AddCollisionsList(collisionsList *head, int indicie[3]);
 
-void deleteHashtable(node* start);
+void deleteHashtable(node *start);
 
 // for bitwise OR to lowercase
 #define BITS 32
@@ -45,13 +45,13 @@ bool tableUnderFive[28][28][28] = {{{NULL}}};
 
 node *traversalNode;
 
-collisionsList* currentCollisionsList;
-collisionsList* previousCollisionsList;
+collisionsList *currentCollisionsList;
+collisionsList *previousCollisionsList;
 
 //Array to store current words first 5 ASCII values
 int currentWordFirst5[3];
 int currentWordLength;
-int numberOfWords =0;
+int numberOfWords = 0;
 int collisionsNumber = 0;
 int wordsLongerThan5 = 0;
 float wordLengthTotal = 0;
@@ -76,9 +76,9 @@ bool check(const char *word)
         traversalNode = tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]];
         while (traversalNode != NULL)
         {
-            if (memcmp(temp, (traversalNode -> word), currentWordLength) == 0 )
+            if (memcmp(temp, (traversalNode -> word), currentWordLength) == 0)
             {
-                if(traversalNode -> word[currentWordLength + 1] != '\0')
+                if (traversalNode -> word[currentWordLength + 1] != '\0')
                 {
                     traversalNode = traversalNode -> next;
                 }
@@ -149,10 +149,10 @@ unsigned int hash(const char *word)
 // Loads dictionary into memory, returning true if successful, else false
 bool load(const char *dictionary)
 {
-       struct stat inputFile_Stat;
+    struct stat inputFile_Stat;
     int index = 0;
     //Open the file
-    FILE* dictPointer = fopen(dictionary, "r");
+    FILE *dictPointer = fopen(dictionary, "r");
     if (dictPointer == NULL)
     {
         printf("Exiting, failed to read dictionary.\n");
@@ -160,7 +160,7 @@ bool load(const char *dictionary)
     }
 
     //Get files stats
-    if (stat(dictionary, &inputFile_Stat)!= 0)
+    if (stat(dictionary, &inputFile_Stat) != 0)
     {
         printf("Exiting, failed to read dictionary file properties.\n");
         return false;
@@ -169,7 +169,7 @@ bool load(const char *dictionary)
     //Allocate space for dictionary in memory
     char *_dictionary;
     _dictionary = malloc((long long)inputFile_Stat.st_size + 1);
-    if(_dictionary == NULL)
+    if (_dictionary == NULL)
     {
         printf("Exiting, memory allocation fail on dictionary load");
         return false;
@@ -196,7 +196,6 @@ bool load(const char *dictionary)
 
         //wordStartPos to current pos is the word
         currentWordLength = currentPos - wordStartPos;
-        wordLengthTotal += (float)currentWordLength;
 
         if (currentWordLength > 3)
         {
@@ -207,14 +206,15 @@ bool load(const char *dictionary)
             }
 
             //Check the over five tables ptr for null
-            if(tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]]== NULL)
+            if (tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]] == NULL)
             {
                 tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]] = CreateNode(wordStartPos, currentWordLength);
                 currentCollisionsList = AddCollisionsList(currentCollisionsList, currentWordFirst5);
             }
             else
             {
-                tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]] = AddNode(tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]], wordStartPos, currentWordLength);
+                tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]] = AddNode(
+                            tableOverFive[currentWordFirst5[0]][currentWordFirst5[1]][currentWordFirst5[2]], wordStartPos, currentWordLength);
             }
         }
         else
@@ -249,14 +249,14 @@ unsigned int size(void)
 // Unloads dictionary from memory, returning true if successful, else false
 bool unload(void)
 {
-       while (currentCollisionsList -> next != NULL)
+    while (currentCollisionsList -> next != NULL)
     {
   
         deleteHashtable(tableOverFive
-        [currentCollisionsList -> position[0]]
-        [currentCollisionsList -> position[1]]
-        [currentCollisionsList -> position[2]]
-        );
+                        [currentCollisionsList -> position[0]]
+                        [currentCollisionsList -> position[1]]
+                        [currentCollisionsList -> position[2]]
+                       );
         
         previousCollisionsList = currentCollisionsList;
         currentCollisionsList = currentCollisionsList -> next;
@@ -268,18 +268,18 @@ bool unload(void)
 
 
 //Creates a new node for a linked list that is null
-node* CreateNode(char * wordToAdd, int wordLength)
+node *CreateNode(char *wordToAdd, int wordLength)
 {
     
     //Allocate memory for node
-    node* temp = malloc(sizeof(node));
+    node *temp = malloc(sizeof(node));
     if (temp == NULL)
     {
         printf("Unable to allocate space.\n");
         exit(1);
     }
     
-    temp-> word[wordLength + 1] = '\0';
+    temp -> word[wordLength + 1] = '\0';
     //Changed strlen(wordToAdd) + 1 to word Lenght +1 watch for seg fault
     //Copy the word to the node
     memcpy(temp -> word, wordToAdd, wordLength + 1);
@@ -289,10 +289,10 @@ node* CreateNode(char * wordToAdd, int wordLength)
 }
 
 // add a new node to an existing linked list, inlined for performance
-node* AddNode(node* head, char * wordToAdd, int wordLength)
+node *AddNode(node *head, char *wordToAdd, int wordLength)
 {
     //Allocate memory for node
-    node* temp = malloc(sizeof(node));
+    node *temp = malloc(sizeof(node));
     if (temp == NULL)
     {
         printf("Unable to allocated space.\n");
@@ -311,10 +311,10 @@ node* AddNode(node* head, char * wordToAdd, int wordLength)
 }
 
 //Creates a new node for a linked list that is null
-collisionsList* CreateCollisionsList(int indicie[3])
+collisionsList *CreateCollisionsList(int indicie[3])
 {
     //Allocate memory for node
-    collisionsList* temp = malloc(sizeof(collisionsList));
+    collisionsList *temp = malloc(sizeof(collisionsList));
     if (temp == NULL)
     {
         printf("Unable to allocate space.\n");
@@ -329,10 +329,10 @@ collisionsList* CreateCollisionsList(int indicie[3])
 }
 
 // add a new node to an existing linked list, inlined for performance
-collisionsList* AddCollisionsList(collisionsList* head, int indicie[3])
+collisionsList *AddCollisionsList(collisionsList *head, int indicie[3])
 {
     //Allocate memory for node
-    collisionsList* temp = malloc(sizeof(collisionsList));
+    collisionsList *temp = malloc(sizeof(collisionsList));
     if (temp == NULL)
     {
         printf("Unable to allocated space.\n");
@@ -344,9 +344,9 @@ collisionsList* AddCollisionsList(collisionsList* head, int indicie[3])
     return temp;
 }
 
-void deleteHashtable(node* start)
+void deleteHashtable(node *start)
 {
-    if(start == NULL)
+    if (start == NULL)
     {
         return;
     }
@@ -359,9 +359,9 @@ void deleteHashtable(node* start)
 }
 
 
-void deleteCollisionsList(collisionsList* start)
+void deleteCollisionsList(collisionsList *start)
 {
-    if(start == NULL)
+    if (start == NULL)
     {
         return;
     }
