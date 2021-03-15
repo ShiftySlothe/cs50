@@ -1,14 +1,10 @@
 // Implements a dictionary's functionality
 
 #include <stdbool.h>
-#define _GNU_SOURCE // for rawmemchr - GNU extension
 #include <sys/stat.h> // for stat struct
-#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> // for memchr and strcmp
-#include <stdint.h> // for murmur hash
-#include <pthread.h> // todo
 #include "dictionary.h"
 
 typedef struct node
