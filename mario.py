@@ -9,5 +9,5 @@ while h <= 0 or h > 8:
 for i in range(h):
     print((h - i - 1) * " ", end="")
     print((i + 1) * "#", end="")
-    print(" ", end="")
+    print("  ", end="")
     print((i + 1) * "#")
