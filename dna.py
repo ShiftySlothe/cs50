@@ -41,15 +41,16 @@ def main():
                 
     # Check database
     for i in range(len(dictList)):
-        matches = 0
+        match = 0
         for j in range(1, len(reader.fieldnames)):
-            if int(maxCounts[j - 1]) == int(dictList[i]  [reader.fieldnames[j]]):
-                matches += 1
-            if matches == (len(reader.fieldnames) - 1):
+            if int(maxCounts[j - 1]) == int(dictList[i][reader.fieldnames[j]]):
+                match += 1
+            if match == (len(reader.fieldnames) - 1):
                 print(dictList[i]['name'])
                 exit(0)
                 
     print("No match")
+
 
 if __name__ == "__main__":
     main()
