@@ -1,14 +1,14 @@
 from cs50 import get_string
 
+
 def CalculateReadability(userInput):
     inputLength = len(userInput)
     userInput = userInput.upper()
-    letterCount = 0;
+    letterCount = 0
     # Initialised at 1 to account for the final word
-    wordCount = 1;
-    sentenceCount = 0;
+    wordCount = 1
+    sentenceCount = 0
     
-
     for i in range(0, inputLength, 1):
         currentCharIndex = ord(userInput[i])
         
@@ -26,10 +26,10 @@ def CalculateReadability(userInput):
     # Number of letters per 100 words
     lettersPer100 = letterCount / wordsPer100
     # Number of sentences per 100 words
-    sentencesPer100 = sentenceCount / wordsPer100;
+    sentencesPer100 = sentenceCount / wordsPer100
     
     # Coleman-Liau index
-    return (0.0588 * lettersPer100) - (0.296 * sentencesPer100) - 15.8;
+    return (0.0588 * lettersPer100) - (0.296 * sentencesPer100) - 15.8
 
 
 def main():
