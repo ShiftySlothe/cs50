@@ -1,0 +1,3 @@
+# Considering adding more comments...
+name = input("What is your name? \n")
+print("hello " + name)
