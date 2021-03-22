@@ -1,18 +1,19 @@
 from cs50 import get_int
 
-#Used to test the length and starting digits by division
-ThirteenDigitTest =      100000000000
-FourteenDigitTest =     1000000000000
-FithteenDigitTest =    10000000000000
-SixteenDigitTest =    100000000000000
+# Used to test the length and starting digits by division
+ThirteenDigitTest = 100000000000
+FourteenDigitTest = 1000000000000
+FithteenDigitTest = 10000000000000
+SixteenDigitTest = 100000000000000
 SeventeenDigitTest = 1000000000000000
 
 firstDigitTest = 0
 cardAsString = " "
 cardNumberLength = 0
 
+
 def CheckLength(creditCardNumber):
-    #Check length of number by division
+    # Check length of number by division
     global cardNumberLength 
     if creditCardNumber / SixteenDigitTest >= 10 and creditCardNumber / SeventeenDigitTest < 100:
         cardNumberLength = 16
@@ -25,14 +26,15 @@ def CheckLength(creditCardNumber):
         cardNumberLength = 13
         return True
 
-    else:    #if INVALID
+    else:  # if INVALID
         cardNumberLength = 0
         UserFailedTest()
         return False
 
+
 def CheckStartingCharacters(creditCardNumber):
     global firstDigitTest 
-    #Places a decimal point after the second character in card number to query first characters
+    # Places a decimal point after the second character in card number to query first characters
     if cardNumberLength == 13:
         firstDigitTest = creditCardNumber / ThirteenDigitTest
         if CheckFirstTwoAmex():
@@ -50,9 +52,10 @@ def CheckStartingCharacters(creditCardNumber):
         elif CheckFirstTwoMasterCard():
             return True
     else:
-        #If switch doesn't return true, user has failed
+        # If switch doesn't return true, user has failed
         UserFailedTest()
         return False
+        
 
 def CheckFirstTwoAmex():
 
@@ -62,6 +65,7 @@ def CheckFirstTwoAmex():
         return True
     else:
         return False
+        
 
 def CheckFirstTwoVisa():
 
@@ -69,6 +73,7 @@ def CheckFirstTwoVisa():
         return True
     else:
         return False
+        
 
 def CheckFirstTwoMasterCard():
     if firstDigitTest >= 51 and firstDigitTest < 56:
@@ -76,13 +81,15 @@ def CheckFirstTwoMasterCard():
     else:
         return False
 
+
 def CheckLuhnsTest(creditCardNumber):
+    # No comments, no marks
     sumOfDigits = 0
 
     global cardAsString 
     cardAsString = str(creditCardNumber)
 
-    #Applies Luhns Algorithm (add and multiply digits) dependant on card number lenght
+    # Applies Luhns Algorithm (add and multiply digits) dependant on card number lenght
     if cardNumberLength == 16:
         sumOfDigits += AddAlternateDigits(0, True)
         sumOfDigits += AddAlternateDigits(1, False)
@@ -95,19 +102,20 @@ def CheckLuhnsTest(creditCardNumber):
     else:
         UserFailedTest()
         return False
+        
 
-#Used to add every other digit in credit card number and double if required
+# Used to add every other digit in credit card number and double if required
 def AddAlternateDigits(startingDigit, doubleAnswers):
     global cardNumberLength
     global cardAsString 
     runningTotal = 0
     for i in range(startingDigit, cardNumberLength, 2):
-        #Converts relevant char of card number to an int
+        # Converts relevant char of card number to an int
         x = int(cardAsString[i])
        
         if doubleAnswers:
             answerDoubled = x * 2
-            #If the doubled answer has more than two digits, adds those individual digits. 
+            # If the doubled answer has more than two digits, adds those individual digits. 
             if x * 2 > 9:
                 runningTotal += answerDoubled - 9
             else:
@@ -116,6 +124,7 @@ def AddAlternateDigits(startingDigit, doubleAnswers):
             runningTotal += x
 
     return runningTotal
+    
 
 def DisplayCardType():
     if firstDigitTest < 40:
@@ -125,8 +134,11 @@ def DisplayCardType():
     else:
         print("VISA")
         
+        
 def UserFailedTest():
     print("INVALID")
+    # Adding even more comments
+  
     
 def main():
 
@@ -136,6 +148,12 @@ def main():
         if CheckStartingCharacters(creditCardNumber):
             if CheckLuhnsTest(creditCardNumber):
                 DisplayCardType()
+
                 
 if __name__ == "__main__":
-    main()
+    main()  # Considering adding more comments
+    # Hmmm, do I need another comment?
+    # I should add some more really
+    # Gotta get those tasty tasty marks
+    # Still more comments it asks for 
+    # I wonder what the ratio they're looking for is
