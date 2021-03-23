@@ -86,7 +86,7 @@ sqlite> SELECT name FROM people INNER JOIN courthouse_security_logs ON people.li
 SELECT name FROM people INNER JOIN phone_calls ON people.phone_number = phone_calls.receiver WHERE day = 28 AND month = 7 AND year = 2020 AND duration < 60 AND phone_calls.caller =
    ...> (SELECT phone_number FROM people WHERE people.name = 'Ernest' OR people.name = 'Russell');
    
---Both spoke to Philip
+--Both spoke to Phil
 
 SELECT * FROM flights INNER JOIN passengers ON flights.id = passengers.flight_id
    ...> INNER JOIN people ON passengers.passport_number = people.passport_number
@@ -101,3 +101,10 @@ SELECT * FROM flights INNER JOIN passengers ON flights.id = passengers.flight_id
 SELECT full_name FROM airports WHERE id = 4;
 
 -- Which went to London
+
+--SOmethings not right
+SELECT name FROM people WHERE phone_number IN (
+    SELECT receiver FROM phone_calls WHERE year = 2020 AND month = 7 AND day = 28
+    AND caller = 
+    ( SELECT phone_number FROM people WHERE name = "Ernest")
+    AND duration < 60);
