@@ -1,0 +1,105 @@
+/* // X-Small devices (portrait phones, less than 576px)
+// No media query for `xs` since this is the default in Bootstrap */
+html{
+    background-color: white;
+}
+
+.container-fluid{
+    background-color: rgba(0, 0, 0, 0.603);
+}
+
+.navbar .container-fluid{
+    background-color: rgba(0, 0, 0, 0.116);
+}
+
+.remove{
+    background-color: blue;
+    text-align: center;
+    height: 100px;
+}
+
+.intro-content{
+    padding-top: 30vh;
+    text-align: center;
+    height: 100px;
+    color: white;
+}
+.remove1{
+    background-color: chartreuse;
+    min-height: 100%;
+}
+.remove2{
+    background-color: cadetblue;
+}
+
+a{
+    text-decoration: none;
+    color: #CA3C25;
+    font-weight: 500;
+}
+
+.bg-image1{
+    background-image: url(../resources/img/pexels-saya-kimura-401107.jpg);
+    background-repeat:no-repeat;
+    background-size: cover;
+    background-position:center;
+}
+
+.bg-image2{
+    background-color: white;
+}
+
+.portrait-image{
+    width: 50%;
+    border-radius: 50%;
+    border-style: solid;
+    border-color: rgb(124, 124, 124);
+    margin-bottom: 25px;
+}
+
+.img-ctr{
+    text-align: center;
+}
+
+.color-grey{
+    color: grey;
+}
+
+.img-responsive{
+    width:100%;
+}
+/* // Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) { 
+    .sidebar{
+        background-color: #17191A;
+        min-height: 100%;
+        padding-top: 25vh;
+        color: white;
+    }
+    .intro-area{
+        margin-top: 25px;
+        height: 150px;
+    }
+ }
+
+/* // Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+    .intro-content{
+        width: 50vw;
+    }
+ }
+
+/* // Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+    
+ }
+
+/* // X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+    
+ }
+
+/* // XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) { 
+    
+ }
