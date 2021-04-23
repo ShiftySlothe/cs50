@@ -81,11 +81,16 @@ def buy():
             return apology("must provide symbol", 400)
 
         buyQuantity = request.form.get("shares")
-        app.logger.info(buyQuantity)
         if not buyQuantity:
             return apology("must provide quantity", 400)
-
-        buyQuantity = int(buyQuantity)
+    
+        try:
+            buyQuantity = int(buyQuantity)
+            if buyQuantity < 1:  # if not a positive int print message and ask for input again
+                return apology("must provide positive integer", 400)
+        except ValueError:
+            return apology("must provide an integer", 400)  
+            
 
         #Get stock data via API
         stockData = lookup(stockSymbol)
