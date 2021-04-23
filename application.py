@@ -209,7 +209,9 @@ def quote():
 
         if not stockSymbol:
             return apology("must provide symbol", 400)
-
+        
+        if lookup(stockSymbol) == None:
+            return apology("invalid stock symbol", 400)
         #Get stock data via API
         stockData = lookup(stockSymbol)
         stockData['price'] = usd(stockData['price'])
