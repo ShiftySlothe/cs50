@@ -63,11 +63,15 @@ def usd(value):
     """Format value as USD."""
     return f"${value:,.2f}"
 
+
 def GetCurrentCash(db):
+    # Returns a users current cash level
     currentCash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])[0]['cash']
     return currentCash
 
+
 def GetPortfolioValue(db, ownedStocks, currentCash):
+    # Returns a users portfolio value including cash
     totalPortfolioValue = 0
     totalPortfolioValue += currentCash
     for stock in ownedStocks:
@@ -75,13 +79,16 @@ def GetPortfolioValue(db, ownedStocks, currentCash):
 
     return totalPortfolioValue
 
+
 def GetOwnedStocks(db):
-    ##Get list of owned stocks
-    ownedStocks = db.execute("SELECT ownedStocks.quantity, stocks.name, stocks.symbol, stocks.id FROM ownedStocks INNER JOIN stocks ON ownedStocks.stockID = stocks.id WHERE userID = ?", session["user_id"])
-    ##Get current cash
+    # Get list of owned stocks
+    ownedStocks = db.execute(
+        "SELECT ownedStocks.quantity, stocks.name, stocks.symbol, stocks.id FROM ownedStocks INNER JOIN stocks ON ownedStocks.stockID = stocks.id WHERE userID = ?",
+        session["user_id"])
+    # Get current cash
     currentCash = GetCurrentCash(db)
 
-    ##Add data to dictonary for each stock
+    # Add data to dictonary for each stock
     for stock in ownedStocks:
         if stock['quantity'] <= 0:
             ownedStocks.remove(stock)
@@ -95,13 +102,17 @@ def GetOwnedStocks(db):
 
     return ownedStocks
 
+
 def GetStockHistory(db):
-         stockHistory = db.execute("SELECT transactions.userID, stocks.symbol, transactions.price, transactions.isBuy, transactions.quantity, transactions.datetime FROM transactions INNER JOIN stocks ON transactions.stockID = stocks.id WHERE userID = ?", session["user_id"])
-         for transaction in stockHistory:
-             if transaction['isBuy'] == 1:
-                 transaction['isBuy'] = True
-             else:
-                 transaction['isBuy'] = False
-         
-         return stockHistory
+    # Returns a formated list of all transactions
+    stockHistory = db.execute(
+        "SELECT transactions.userID, stocks.symbol, transactions.price, transactions.isBuy, transactions.quantity, transactions.datetime FROM transactions INNER JOIN stocks ON transactions.stockID = stocks.id WHERE userID = ?",
+        session["user_id"])
+    for transaction in stockHistory:
+        if transaction['isBuy'] == 1:
+            transaction['isBuy'] = True
+    else:
+        transaction['isBuy'] = False
+    
+    return stockHistory
              

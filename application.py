@@ -51,12 +51,13 @@ def index():
 
     return render_template("index.html", ownedStocks=ownedStocks, currentCash=currentCash, totalPortfolioValue=totalPortfolioValue)
 
+
 @app.route("/bank", methods=["GET", "POST"])
 @login_required
 def bank():
     """Add cash"""
     if request.method == "POST":
-        #Validate form
+        # Validate form
         cashToAdd = float(request.form.get("cash"))
         currentCash = GetCurrentCash(db)
         newCash = currentCash + cashToAdd
@@ -69,12 +70,13 @@ def bank():
         totalPortfolioValue = GetPortfolioValue(db, ownedStocks, currentCash)
         return render_template("bank.html", ownedStocks=ownedStocks, currentCash=currentCash, totalPortfolioValue=totalPortfolioValue)
 
+
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
 def buy():
     """Get stock quote."""
     if request.method == "POST":
-        #Parse and validate form data
+        # Parse and validate form data
         stockSymbol = request.form.get("symbol")
 
         if not stockSymbol:
@@ -91,47 +93,49 @@ def buy():
         except ValueError:
             return apology("must provide an integer", 400)  
             
-
-        #Get stock data via API
+        # Get stock data via API
         stockData = lookup(stockSymbol)
         if not stockData:
             return apology("failed to find stock data, please check symbol", 400)
 
-        #Check for stock in DB, add if not found
+        # Check for stock in DB, add if not found
         stock = db.execute("SELECT * FROM stocks WHERE symbol = ?", stockData['symbol'])
         if(len(stock) != 1):
-            db.execute("INSERT INTO stocks (name, lastPrice, symbol) VALUES (?, ?, ?)", stockData['name'], stockData['price'], stockData['symbol']);
-
+            db.execute("INSERT INTO stocks (name, lastPrice, symbol) VALUES (?, ?, ?)", 
+                       stockData['name'], stockData['price'], stockData['symbol'])
 
         stockID = db.execute("SELECT id FROM stocks WHERE symbol = ?", stockData['symbol'])
-        stockID= stockID[0]['id']
+        stockID = stockID[0]['id']
 
-        #Query whether user can afford stock
+        # Query whether user can afford stock
         userCash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
         userCash = userCash[0]['cash']
 
         transactionTotalCost = float(stockData['price']) * buyQuantity
         if(transactionTotalCost > userCash):
             return apology("you're skint, try again later", 403)
-        #Buy stock
+        # Buy stock
         else:
-            #Update User Cash
+            # Update User Cash
             updatedUserCash = userCash - transactionTotalCost
             db.execute("UPDATE users SET cash = ? WHERE id = ?", updatedUserCash, session["user_id"])
-            #Update Tranactions
+            # Update Tranactions
             timestamp = datetime.now()
             timestampStr = timestamp.strftime("%m/%d/%Y, %H:%M:%S")
-            db.execute("INSERT INTO transactions (userID, stockID, isBuy, price, quantity, datetime) VALUES (?, ?, 1, ?, ?, ?)", session["user_id"], stockID, stockData['price'], buyQuantity, timestampStr)
-            #Update Inventory
+            db.execute("INSERT INTO transactions (userID, stockID, isBuy, price, quantity, datetime) VALUES (?, ?, 1, ?, ?, ?)", session["user_id"], 
+                       stockID, stockData['price'], buyQuantity, timestampStr)
+            #  Inventory
             userInventory = db.execute("SELECT * FROM ownedStocks WHERE userID = ? AND stockID = ?", session["user_id"], stockID)
             if(len(userInventory) != 1):
-                db.execute("INSERT INTO ownedStocks (userID, stockID, quantity) VALUES (?, ?, ?)", session["user_id"], stockID, buyQuantity)
+                db.execute("INSERT INTO ownedStocks (userID, stockID, quantity) VALUES (?, ?, ?)", session["user_id"], 
+                           stockID, buyQuantity)
             else:
                 userStockQuantity = userInventory[0]['quantity'] + buyQuantity
-                db.execute("UPDATE ownedStocks SET quantity = ? WHERE userID = ? AND stockID = ?", userStockQuantity, session["user_id"], stockID)
+                db.execute("UPDATE ownedStocks SET quantity = ? WHERE userID = ? AND stockID = ?", 
+                           userStockQuantity, session["user_id"], stockID)
 
         return redirect("/buy")
-    ##Method GET
+    # Method GET
     else:
         currentCash = GetCurrentCash(db)
         currentCashStr = usd(currentCash)
@@ -144,12 +148,12 @@ def buy():
 @app.route("/history")
 @login_required
 def history():
-        stockHistory = GetStockHistory(db)
-        currentCash = GetCurrentCash(db)
-        currentCashStr = usd(currentCash)
-        ownedStocks = GetOwnedStocks(db)
-        totalPortfolioValue = usd(GetPortfolioValue(db, ownedStocks, currentCash))
-        return render_template("history.html", ownedStocks=ownedStocks, currentCash=currentCashStr, totalPortfolioValue=totalPortfolioValue, stockHistory=stockHistory)
+    stockHistory = GetStockHistory(db)
+    currentCash = GetCurrentCash(db)
+    currentCashStr = usd(currentCash)
+    ownedStocks = GetOwnedStocks(db)
+    totalPortfolioValue = usd(GetPortfolioValue(db, ownedStocks, currentCash))
+    return render_template("history.html", ownedStocks=ownedStocks, currentCash=currentCashStr, totalPortfolioValue=totalPortfolioValue, stockHistory=stockHistory)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -212,13 +216,13 @@ def quote():
         
         if lookup(stockSymbol) == None:
             return apology("invalid stock symbol", 400)
-        #Get stock data via API
+        # Get stock data via API
         stockData = lookup(stockSymbol)
         stockData['price'] = usd(stockData['price'])
         if not stockData:
             return apology("failed to find stock data, please check symbol", 400)
 
-        return render_template("quoted.html", stockData = stockData)
+        return render_template("quoted.html", stockData=stockData)
 
     else:
         return render_template("quote.html")
@@ -252,8 +256,9 @@ def register():
         if len(rows) == 1:
             return apology("username taken", 400)
 
-        #Add user to DB
-        db.execute("INSERT INTO users (username, hash) VALUES(?, ?)", request.form.get("username"), generate_password_hash(request.form.get("password")))
+        # Add user to DB
+        db.execute("INSERT INTO users (username, hash) VALUES(?, ?)", request.form.get("username"), 
+                   generate_password_hash(request.form.get("password")))
 
         # Query database for username
         rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
@@ -277,14 +282,14 @@ def register():
 @login_required
 def sell():
     if request.method == "POST":
-        ##Validate form
+        # Validate form
         if not request.form.get("symbol") or not request.form.get("shares"):
             return apology('form error, please resubmit', 400)
 
         stockSymblToSell = request.form.get("symbol")
         sellQuantity = float(request.form.get("shares"))
 
-        ##Check user owns stock, grab price
+        # Check user owns stock, grab price
         stockOwned = False
         stockData = {}
 
@@ -296,29 +301,33 @@ def sell():
                 break
         app.logger.info(stockData)
         if stockOwned:
-            ##Check enough stock is owned
-            quantityOwned = db.execute("SELECT ownedStocks.quantity, stocks.symbol FROM ownedStocks INNER JOIN stocks ON ownedStocks.stockID = stocks.id WHERE userID = ? AND stocks.symbol = ?", session["user_id"], stockSymblToSell)
+            # Check enough stock is owned
+            quantityOwned = db.execute(
+                "SELECT ownedStocks.quantity, stocks.symbol FROM ownedStocks INNER JOIN stocks ON ownedStocks.stockID = stocks.id WHERE userID = ? AND stocks.symbol = ?",
+                session["user_id"], stockSymblToSell)
             if len(quantityOwned) != 1:
                 return apology('db error', 400)
             quantityOwned = quantityOwned[0]['quantity']
 
             if sellQuantity > quantityOwned:
                 return apology('need more stonks', 400)
-            ##Process sale
+            # Process sale
             else:
-                #Update Quantity
+                # Update Quantity
                 stocksRemaining = quantityOwned - sellQuantity
-                db.execute("UPDATE ownedStocks SET quantity = ? WHERE userID = ? AND stockID = (SELECT id FROM stocks WHERE symbol = ?)", stocksRemaining, session["user_id"], stockSymblToSell)
+                db.execute("UPDATE ownedStocks SET quantity = ? WHERE userID = ? AND stockID = (SELECT id FROM stocks WHERE symbol = ?)",
+                           stocksRemaining, session["user_id"], stockSymblToSell)
 
-                #Update cash
+                # Update cash
                 sellPrice = sellQuantity * stockData['stockPrice']
                 newCash = GetCurrentCash(db) + sellPrice
                 db.execute("UPDATE users SET cash = ? WHERE id = ?", newCash, session["user_id"])
 
-                #Update transactions
+                # Update transactions
                 timestamp = datetime.now()
                 timestampStr = timestamp.strftime("%m/%d/%Y, %H:%M:%S")
-                db.execute("INSERT INTO transactions (userID, stockID, isBuy, price, quantity, datetime) VALUES (?, ?, 0, ?, ?, ?)", session["user_id"], stockData['id'], stockData['stockPrice'], sellQuantity, timestampStr)
+                db.execute("INSERT INTO transactions (userID, stockID, isBuy, price, quantity, datetime) VALUES (?, ?, 0, ?, ?, ?)",
+                           session["user_id"], stockData['id'], stockData['stockPrice'], sellQuantity, timestampStr)
 
         else:
             return apology('need more stonks', 403)
