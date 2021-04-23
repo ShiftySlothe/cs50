@@ -75,7 +75,7 @@ def buy():
     """Get stock quote."""
     if request.method == "POST":
         #Parse and validate form data
-        stockSymbol = request.form.get("symbol")
+        stockSymbol = request.form.get("shares")
 
         if not stockSymbol:
             return apology("must provide symbol", 403)
@@ -201,12 +201,12 @@ def quote():
         stockSymbol = request.form.get("symbol")
 
         if not stockSymbol:
-            return apology("must provide symbol", 403)
+            return apology("must provide symbol", 400)
 
         #Get stock data via API
         stockData = lookup(stockSymbol)
         if not stockData:
-            return apology("failed to find stock data, please check symbol", 403)
+            return apology("failed to find stock data, please check symbol", 400)
 
         return render_template("quoted.html", stockData = stockData)
 
@@ -224,11 +224,11 @@ def register():
 
         # Ensure username was submitted
         if not request.form.get("username"):
-            return apology("must provide username", 403)
+            return apology("must provide username", 400)
 
         # Ensure password was submitted
         elif not request.form.get("password"):
-            return apology("must provide password", 403)
+            return apology("must provide password", 400)
 
         password = request.form.get("password")
         passwordCheck = request.form.get("confirmation")
@@ -240,7 +240,7 @@ def register():
         rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
 
         if len(rows) == 1:
-            return apology("username taken", 403)
+            return apology("username taken", 400)
 
         #Add user to DB
         db.execute("INSERT INTO users (username, hash) VALUES(?, ?)", request.form.get("username"), generate_password_hash(request.form.get("password")))
