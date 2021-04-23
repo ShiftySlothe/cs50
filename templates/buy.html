@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Buy
+{% endblock %}
+
+{% block main %}
+<h2>Stonks</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Company Name</th>
+                <th>Company Symbol</th>
+                <th>Shares</th>
+                <th>Price</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stock in ownedStocks %}
+            <tr>
+                <td>{{stock['name']}}</td>
+                <td>{{stock['symbol']}}</td>
+                <td>{{stock['quantity']}}</td>
+                <td>{{stock['stockPriceStr']}}</td>
+                <td>{{stock['currentValueStr']}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td>Cash</td>
+                <td>USD</td>
+                <td></td>
+                <td></td>
+                <td>{{currentCash}}</td>
+            </tr>
+            <tr>
+                <td>Total Value</td>
+                <td>USD</td>
+                <td></td>
+                <td></td>
+                <td>{{totalPortfolioValue}}</td>
+            </tr>
+        </tbody>
+    </table>
+<h3>Buy</h3>
+    <form action="/buy" method="post">
+        <div class="form-group">
+            <label for="symbol">Stock Code: </label>
+            <input autocomplete="off" autofocus class="form-control" name="symbol" placeholder="Stock Code" type="text">
+        </div>
+        <div class="form-group">
+            <label for="quantity">Quantity: </label>
+            <input autocomplete="off" autofocus class="form-control" name="shares" placeholder="Quantity" type="number">
+        </div>
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+{% endblock %}
