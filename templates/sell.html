@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+                <h2>Stonks</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Company Name</th>
+                            <th>Company Symbol</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stock in ownedStocks %}
+                        <tr>
+                            <td>{{stock['name']}}</td>
+                            <td>{{stock['symbol']}}</td>
+                            <td>{{stock['quantity']}}</td>
+                            <td>{{stock['stockPriceStr']}}</td>
+                            <td>{{stock['currentValue']}}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td>Cash</td>
+                            <td>USD</td>
+                            <td></td>
+                            <td></td>
+                            <td>{{currentCash}}</td>
+                        </tr>
+                        <tr>
+                            <td>Total Value</td>
+                            <td>USD</td>
+                            <td></td>
+                            <td></td>
+                            <td>{{totalPortfolioValue}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>Sell</h3>
+                <form action="/sell" method="post">
+                    <label for="stock">Stock: </label>
+                    <select name="stock" id="stock">
+                        {% for stock in ownedStocks%}
+                        <option value ="{{stock['symbol']}}">{{stock['symbol']}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="sellQuantity">Ammount: </label>
+                    <input type="text" id="sellQuantity" name="sellQuantity"><br>
+                    <button type="submit">Sell!</button>
+                </form>
+{% endblock %}

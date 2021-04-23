@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Bank
+{% endblock %}
+
+{% block main %}
+<h2>Stonks</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Company Name</th>
+                <th>Company Symbol</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stock in ownedStocks %}
+            <tr>
+                <td>{{stock['name']}}</td>
+                <td>{{stock['symbol']}}</td>
+                <td>{{stock['quantity']}}</td>
+                <td>{{stock['stockPriceStr']}}</td>
+                <td>{{stock['currentValue']}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td>Cash</td>
+                <td>USD</td>
+                <td></td>
+                <td></td>
+                <td>{{currentCash}}</td>
+            </tr>
+            <tr>
+                <td>Total Value</td>
+                <td>USD</td>
+                <td></td>
+                <td></td>
+                <td>{{totalPortfolioValue}}</td>
+            </tr>
+        </tbody>
+    </table>
+<h3>Add Cash</h3>
+    <form action="/bank" method="post">
+        <div class="form-group">
+            <label for="symbol">Ammount: </label>
+            <input autocomplete="off" autofocus class="form-control" name="cash" placeholder="1 Million Dollars!" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+{% endblock %}
