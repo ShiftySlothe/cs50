@@ -210,6 +210,7 @@ def quote():
 
         #Get stock data via API
         stockData = lookup(stockSymbol)
+        stockData['price'] = usd(stockData['price'])
         if not stockData:
             return apology("failed to find stock data, please check symbol", 400)
 

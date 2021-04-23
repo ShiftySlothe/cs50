@@ -14,20 +14,6 @@
     </form>
     <hr>
     <h2>{{stockData.name}}</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Code</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{stockData.name}}</td>
-                            <td>{{stockData.price}}</td>
-                            <td>{{stockData.symbol}}</td>
-                        </tr>  
-                    </tbody>
-                </table>
+    <p>A share of {{stockData.name}} ({{stockData.symbol}}) costs {{stockData.price}}
+           
 {% endblock %}

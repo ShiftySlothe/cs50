@@ -91,6 +91,7 @@ def GetOwnedStocks(db):
         stock['stockPrice'] = stockPrice
         stock['stockPriceStr'] = stockPriceStr
         stock['currentValue'] = stockPrice * stock['quantity']
+        stock['currentValueStr'] = usd(stock['currentValue'])
 
     return ownedStocks
 
