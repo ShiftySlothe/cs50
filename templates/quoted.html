@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <form action="/quote" method="post">
+        <div class="form-group">
+            <label for="symbol">Stock Code: </label>
+            <input autocomplete="off" autofocus class="form-control" name="symbol" placeholder="Stock Code" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+    <hr>
+    <h2>{{stockData.name}}</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Code</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{stockData.name}}</td>
+                            <td>{{stockData.price}}</td>
+                            <td>{{stockData.symbol}}</td>
+                        </tr>  
+                    </tbody>
+                </table>
+{% endblock %}
