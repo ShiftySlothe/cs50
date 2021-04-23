@@ -146,9 +146,10 @@ def buy():
 def history():
         stockHistory = GetStockHistory(db)
         currentCash = GetCurrentCash(db)
+        currentCashStr = usd(currentCash)
         ownedStocks = GetOwnedStocks(db)
-        totalPortfolioValue = GetPortfolioValue(db, ownedStocks, currentCash)
-        return render_template("history.html", ownedStocks=ownedStocks, currentCash=currentCash, totalPortfolioValue=totalPortfolioValue, stockHistory=stockHistory)
+        totalPortfolioValue = usd(GetPortfolioValue(db, ownedStocks, currentCash))
+        return render_template("history.html", ownedStocks=ownedStocks, currentCash=currentCashStr, totalPortfolioValue=totalPortfolioValue, stockHistory=stockHistory)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -276,7 +277,7 @@ def sell():
     if request.method == "POST":
         ##Validate form
         if not request.form.get("stock") or not request.form.get("sellQuantity"):
-            return apology('form error, please resubmit', 403)
+            return apology('form error, please resubmit', 400)
 
         stockSymblToSell = request.form.get("stock")
         sellQuantity = float(request.form.get("sellQuantity"))
@@ -296,11 +297,11 @@ def sell():
             ##Check enough stock is owned
             quantityOwned = db.execute("SELECT ownedStocks.quantity, stocks.symbol FROM ownedStocks INNER JOIN stocks ON ownedStocks.stockID = stocks.id WHERE userID = ? AND stocks.symbol = ?", session["user_id"], stockSymblToSell)
             if len(quantityOwned) != 1:
-                return apology('db error', 403)
+                return apology('db error', 400)
             quantityOwned = quantityOwned[0]['quantity']
 
             if sellQuantity > quantityOwned:
-                return apology('need more stonks', 403)
+                return apology('need more stonks', 400)
             ##Process sale
             else:
                 #Update Quantity
@@ -323,10 +324,11 @@ def sell():
         return redirect("/sell")
     else:
         currentCash = GetCurrentCash(db)
+        currentCashStr = usd(currentCash)
         ownedStocks = GetOwnedStocks(db)
-        totalPortfolioValue = GetPortfolioValue(db, ownedStocks, currentCash)
+        totalPortfolioValue = usd(GetPortfolioValue(db, ownedStocks, currentCash)))
 
-        return render_template("sell.html", ownedStocks=ownedStocks, currentCash=currentCash, totalPortfolioValue=totalPortfolioValue)
+        return render_template("sell.html", ownedStocks=ownedStocks, currentCash=currentCashStr, totalPortfolioValue=totalPortfolioValue)
 
 
 def errorhandler(e):
