@@ -326,7 +326,7 @@ def sell():
         currentCash = GetCurrentCash(db)
         currentCashStr = usd(currentCash)
         ownedStocks = GetOwnedStocks(db)
-        totalPortfolioValue = usd(GetPortfolioValue(db, ownedStocks, currentCash)))
+        totalPortfolioValue = usd(GetPortfolioValue(db, ownedStocks, currentCash))
 
         return render_template("sell.html", ownedStocks=ownedStocks, currentCash=currentCashStr, totalPortfolioValue=totalPortfolioValue)
 
