@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+<h2>Stonks</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Company Name</th>
+                <th>Company Symbol</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stock in ownedStocks %}
+            <tr>
+                <td>{{stock['name']}}</td>
+                <td>{{stock['symbol']}}</td>
+                <td>{{stock['quantity']}}</td>
+                <td>{{stock['stockPriceStr']}}</td>
+                <td>{{stock['currentValue']}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td>Cash</td>
+                <td>USD</td>
+                <td></td>
+                <td></td>
+                <td>{{currentCash}}</td>
+            </tr>
+            <tr>
+                <td>Total Value</td>
+                <td>USD</td>
+                <td></td>
+                <td></td>
+                <td>{{totalPortfolioValue}}</td>
+            </tr>
+        </tbody>
+    </table>
+<h3>History</h3>
+        <table>
+        <thead>
+            <tr>
+                <th>Company Symbol</th>
+                <th>Transaction Price</th>
+                <th>Buy/Sell</th>
+                <th>Quantity</th>
+                <th>Date/Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in stockHistory %}
+            <tr>
+                <td>{{transaction['symbol']}}</td>
+                <td>{{transaction['price']}}</td>
+                {% if transaction['isBuy']%}
+                <td>Buy</td>
+                {% endif %}
+                {% if not transaction['isBuy']%}
+                <td>Sell</td>
+                {% endif %}
+                <td>{{transaction['quantity']}}</td>
+                <td>{{transaction['datetime']}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
