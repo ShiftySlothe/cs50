@@ -134,10 +134,11 @@ def buy():
     ##Method GET
     else:
         currentCash = GetCurrentCash(db)
+        currentCashStr = usd(currentCash)
         ownedStocks = GetOwnedStocks(db)
-        totalPortfolioValue = GetPortfolioValue(db, ownedStocks, currentCash)
+        totalPortfolioValue = usd(GetPortfolioValue(db, ownedStocks, currentCash))
 
-        return render_template("buy.html", ownedStocks=ownedStocks, currentCash=currentCash, totalPortfolioValue=totalPortfolioValue)
+        return render_template("buy.html", ownedStocks=ownedStocks, currentCash=currentCashStr, totalPortfolioValue=totalPortfolioValue)
 
 
 @app.route("/history")
