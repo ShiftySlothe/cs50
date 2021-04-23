@@ -46,7 +46,7 @@
                 <h3>Sell</h3>
                 <form action="/sell" method="post">
                     <label for="stock">Stock: </label>
-                    <select name="stock" id="stock">
+                    <select name="symbol" id="symbol">
                         {% for stock in ownedStocks%}
                         <option value ="{{stock['symbol']}}">{{stock['symbol']}}</option>
                         {% endfor %}

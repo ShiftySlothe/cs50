@@ -276,10 +276,10 @@ def register():
 def sell():
     if request.method == "POST":
         ##Validate form
-        if not request.form.get("stock") or not request.form.get("shares"):
+        if not request.form.get("symbol") or not request.form.get("shares"):
             return apology('form error, please resubmit', 400)
 
-        stockSymblToSell = request.form.get("stock")
+        stockSymblToSell = request.form.get("symbol")
         sellQuantity = float(request.form.get("shares"))
 
         ##Check user owns stock, grab price
