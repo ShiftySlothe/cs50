@@ -61,36 +61,36 @@ def bank():
         currentCash = GetCurrentCash(db)
         newCash = currentCash + cashToAdd
         db.execute("UPDATE users SET cash = ? WHERE id = ?", newCash, session["user_id"])
-        
+
         return redirect("/bank")
     else:
         currentCash = GetCurrentCash(db)
         ownedStocks = GetOwnedStocks(db)
         totalPortfolioValue = GetPortfolioValue(db, ownedStocks, currentCash)
         return render_template("bank.html", ownedStocks=ownedStocks, currentCash=currentCash, totalPortfolioValue=totalPortfolioValue)
-        
+
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
 def buy():
     """Get stock quote."""
     if request.method == "POST":
         #Parse and validate form data
-        stockSymbol = request.form.get("shares")
+        stockSymbol = request.form.get("symbol")
 
         if not stockSymbol:
-            return apology("must provide symbol", 403)
+            return apology("must provide symbol", 400)
 
-        buyQuantity = request.form.get("quantity")
+        buyQuantity = request.form.get("shares")
         app.logger.info(buyQuantity)
         if not buyQuantity:
-            return apology("must provide quantity", 403)
+            return apology("must provide quantity", 400)
 
         buyQuantity = int(buyQuantity)
 
         #Get stock data via API
         stockData = lookup(stockSymbol)
         if not stockData:
-            return apology("failed to find stock data, please check symbol", 403)
+            return apology("failed to find stock data, please check symbol", 400)
 
         #Check for stock in DB, add if not found
         stock = db.execute("SELECT * FROM stocks WHERE symbol = ?", stockData['symbol'])
@@ -124,7 +124,7 @@ def buy():
             else:
                 userStockQuantity = userInventory[0]['quantity'] + buyQuantity
                 db.execute("UPDATE ownedStocks SET quantity = ? WHERE userID = ? AND stockID = ?", userStockQuantity, session["user_id"], stockID)
-                
+
         return redirect("/buy")
     ##Method GET
     else:
@@ -234,7 +234,7 @@ def register():
         passwordCheck = request.form.get("confirmation")
 
         if password != passwordCheck:
-            return apology("passwords must match", 403)
+            return apology("passwords must match", 400)
 
         # Query database for existing username
         rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
@@ -250,7 +250,7 @@ def register():
 
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
-            return apology("registration failure, please resubmit", 403)
+            return apology("registration failure, please resubmit", 400)
 
         # Remember which user has logged in
         session["user_id"] = rows[0]["id"]
@@ -270,14 +270,14 @@ def sell():
         ##Validate form
         if not request.form.get("stock") or not request.form.get("sellQuantity"):
             return apology('form error, please resubmit', 403)
-            
+
         stockSymblToSell = request.form.get("stock")
         sellQuantity = float(request.form.get("sellQuantity"))
 
         ##Check user owns stock, grab price
         stockOwned = False
         stockData = {}
-        
+
         ownedStocks = GetOwnedStocks(db)
         for stock in ownedStocks:
             if stock['symbol'] == stockSymblToSell:
@@ -299,17 +299,17 @@ def sell():
                 #Update Quantity
                 stocksRemaining = quantityOwned - sellQuantity
                 db.execute("UPDATE ownedStocks SET quantity = ? WHERE userID = ? AND stockID = (SELECT id FROM stocks WHERE symbol = ?)", stocksRemaining, session["user_id"], stockSymblToSell)
-                
+
                 #Update cash
                 sellPrice = sellQuantity * stockData['stockPrice']
                 newCash = GetCurrentCash(db) + sellPrice
                 db.execute("UPDATE users SET cash = ? WHERE id = ?", newCash, session["user_id"])
-                
+
                 #Update transactions
                 timestamp = datetime.now()
                 timestampStr = timestamp.strftime("%m/%d/%Y, %H:%M:%S")
                 db.execute("INSERT INTO transactions (userID, stockID, isBuy, price, quantity, datetime) VALUES (?, ?, 0, ?, ?, ?)", session["user_id"], stockData['id'], stockData['stockPrice'], sellQuantity, timestampStr)
-            
+
         else:
             return apology('need more stonks', 403)
 
