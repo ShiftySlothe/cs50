@@ -1,0 +1,232 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+    font-family: 'Open Sans', sans-serif;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* END CSS RESET */
+
+/* GRID CONTAINER */
+.container{
+    display: grid;
+    grid-template-columns: 2fr 8fr 2fr;
+    grid-template-rows: 15% auto 15%;
+    grid-template-areas: 
+    "header header header header"
+    "main main main main"
+    "footer footer footer footer";
+    height: 100vh;
+    column-gap: 5px;
+}
+
+.item-a, .item-b, .item-c{
+    padding: 10px;
+}
+.item-a {
+    grid-area: header;
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    justify-self: end;
+    padding-top: 25px;
+    padding-right: 40px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+.item-b {
+    grid-area: main;
+    justify-self: center;
+    display: block;
+    text-align: center;
+}
+
+.item-c {
+    grid-area: footer;
+}
+
+.item-d {
+    grid-area: header;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 25px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+.item-e {
+    width: 100%;
+    grid-area: main;
+    justify-self: start;
+    display: block;
+}
+
+/* END GRID CONTAINER */
+/* CLASS */
+.search-buttons{
+    margin: 5px;
+}
+
+.search-bar{
+    width: 600px;
+    height: 37px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.205);
+    border-width: 1px;
+    border-radius: 15px;
+    display: grid;
+    grid-template-columns: 1fr 10fr 1fr;
+}
+
+.search-center{
+    text-align: center;
+    padding-top: 5px;
+}
+
+.form-group{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+/* END CLASS */
+/* ID */
+#asearch-header{
+    margin-left: 40px;
+    padding-bottom: 18px;
+    color: #D93025;
+    font-size: 20px;
+}
+
+#asearch-body input[type=text]{
+    border: 1px solid rgba(0, 0, 0, 0.473);
+    box-shadow: -1px -1px 1px #888888;
+    display: inline-block;
+    text-align: left;
+}
+#asearch-body{
+    margin-left: 40px;
+}
+#search-icon{
+    height: 20px;
+    padding: 9px;
+}
+
+#logo{
+    padding-bottom: 25px;
+}
+
+#image-logo{
+    padding-bottom: 20px;
+    height: 96px;
+    width: 273px;
+}
+
+#banner-logo{
+    height: 23px;
+    padding-left: 20px;
+}
+
+#banner-link{
+    padding-right: 175px;
+}
+#advanced-submit{
+    background-color: #4B8DF9;
+    color: white;
+    font-weight: 600;
+    margin-left: 611px;
+}
+/* END ID */
+/* TAG */
+a{
+    text-decoration: none;
+    color: black;
+    font-size: 15px;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+input[type=text]{
+    width: 480px;
+    height: 25px;
+    border: none;
+    font-size: 18px;
+}
+
+input[type=text]:focus{
+    outline: none;
+}
+
+input[type=submit], button{
+    width: 125px;
+    height: 32px;
+    border: none;
+    background-color: #F8F9FA;
+}
+
+input[type=submit]:hover, button:hover{
+    width: 126px;
+    height: 33px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    border-color: rgb(201, 201, 201);
+}
+
+h2{
+    padding: 20px 0px;
+}
+
+
+label{
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 250px;
+    text-align: left;
+}
+
